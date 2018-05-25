@@ -10,7 +10,9 @@
 	</button>
     <div class='collapse navbar-collapse justify-content-end' id='navbarNav'>
     	<ul class='navbar-nav '>
-	        <li class='nav-item'><a class='nav-link' href='#' onclick='actionHome('#leftMenu')'>Procesos</a></li>
+	        <li class='nav-item'>
+	        	<a class='nav-link' href='#' onclick='cargarMenu("procesosMenu","procesos")'>Procesos</a>
+	        </li>
 	        <li class='nav-item'><a class='nav-link' href='#'>Monitoreo</a></li>
 	        <li class='nav-item'><a class='nav-link' href='#'>Reportes</a></li>
 	        <li class='nav-item dropdown'>

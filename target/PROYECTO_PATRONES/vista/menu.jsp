@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 
 <!-- contenido principal -->
-<div class='container-fluid' id = "menuPanel">
+<div class='container-fluid' id = "menuPanel" style = 'margin-top: 2px; padding-left: 2px;'>
 	<div class='row'>
-		<div class='col-4' id ='leftMenu'>
+		<div class='col-3' id ='leftMenu'>
     		Contenido del menu a la izquierda
     	</div>
 		<div class='col' id = 'mainContent'>

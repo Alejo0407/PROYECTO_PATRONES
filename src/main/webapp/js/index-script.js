@@ -1,3 +1,4 @@
+/*Función del loggin*/
 $(function() { 
     $('#logginPanel-logginForm').on('submit', function(e) { //use on if jQuery 1.7+
         e.preventDefault();
@@ -5,11 +6,25 @@ $(function() {
 			user:$('input[name=username]').val(),
 			pass:$('input[name=password]').val()
 		};
-        console.log(formData['user']); //use the console for debugging, F12 in Chrome, not alerts
-    	console.log(formData['pass']);
+
+		$('#loader').css('visibility','visible');
+		$('body').css('background-color','gray');
+		$('#logginPanel').hide();
+    	console.log('show invoked');
+    	
     	$.post("IndexController", formData,function(responseText) {
+    		
+		}).done(function(responseText){
 			$('body').append(responseText);
-			$('#logginPanel').hide();
+			
+		}).fail(function(){
+			alert('hubo un error');
+			$('#logginPanel').show();
+
+		}).always(function(){
+			$('#loader').css('visibility','hidden');
+			$('body').css('background-color','#fff');
+    		console.log('hide invoked');
 		});
     });
 });
@@ -19,15 +34,4 @@ function loggout(){
 	$('#menuPanel').remove();
 	$('#logginPanel').show();
 
-}
-
-function actionHome(variable){
-	console.log(variable);
-	if($(variable).is(':visible')){
-		$(variable).hide();	
-	}
-	else{
-		$(variable).show();
-	}
-	
 }
