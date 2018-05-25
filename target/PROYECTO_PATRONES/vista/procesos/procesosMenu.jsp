@@ -2,11 +2,13 @@
     pageEncoding='UTF-8'%>
 
 <div id='accordion'>
+  
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn btn-dark' data-toggle='collapse' data-target='#navLotes' 
-        	aria-expanded='true' aria-controls='collapseOne'>
+        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navLotes' 
+        	aria-expanded='true' aria-controls='collapseOne'
+        	style='text-decoration: none;'>
           Lotes
         </button>
       </h5>
@@ -24,7 +26,7 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn btn-dark' data-toggle='collapse' data-target='#navDiarios' 
+        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navDiarios' 
         	aria-expanded='true' aria-controls='collapseOne'>
           Diarios
         </button>
@@ -46,7 +48,7 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn btn-dark' data-toggle='collapse' data-target='#navBajas' 
+        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navBajas' 
         	aria-expanded='true' aria-controls='collapseOne'>
           Bajas
         </button>
@@ -67,7 +69,7 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn btn-dark' data-toggle='collapse' data-target='#navEmergencia' 
+        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navEmergencia' 
         	aria-expanded='true' aria-controls='collapseOne'>
           Emergencia
         </button>
