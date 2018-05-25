@@ -13,18 +13,12 @@ import java.io.IOException;
 @WebServlet(name = "IndexController", urlPatterns= {"/IndexController"})
 public class IndexController extends HttpServlet{
 
-	public void doGet(HttpServletRequest request, 
+	public void doPost(HttpServletRequest request, 
 		HttpServletResponse response) throws ServletException,IOException{
 
-		//String someText = "Esto es una prueba";
-		HttpSession session = request.getSession();
-		session.setAttribute("mensaje","Esta es una llamada al include.jsp");
-
-		response.setContentType("text/plain");
-		response.setCharacterEncoding("UTF-8");
-		try(PrintWriter out = response.getWriter()){
-			out.print("vista/include.jsp");
-		}
+		request.setAttribute("user",request.getParameter("user"));
+		request.setAttribute("pass",request.getParameter("pass"));
+		request.getRequestDispatcher("vista/barraNavegacion.jsp").forward(request,response);
 	}
 
 }
