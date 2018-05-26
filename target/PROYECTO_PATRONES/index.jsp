@@ -12,16 +12,10 @@
         
         <script type='text/javascript' src='webjars/bootstrap/4.1.0/js/bootstrap.min.js'></script>
 		<script type='text/javascript' src='js/index-script.js' ></script>
-        <script type='text/javascript' src='js/barraNavegacion-script.js'></script>
+        <script type='text/javascript' src='js/contenidoPrincipal-script.js'></script>
 
     </head>
     <body>
-        
-        <!-- Cargando... -->
-        <div id='loader'>  
-        </div>
-
-
         <!-- Loggin del sistema -->
         <div id='logginPanel' class='container'>
             

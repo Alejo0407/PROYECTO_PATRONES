@@ -7,10 +7,9 @@ $(function() {
 			pass:$('input[name=password]').val()
 		};
 
-		$('#loader').css('visibility','visible');
-		$('body').css('background-color','gray');
 		$('#logginPanel').hide();
-    	console.log('show invoked');
+		$('body').css('background-color','gray');
+		$('body').append('<div id="loader"></div>');
     	
     	$.post("IndexController", formData,function(responseText) {
     		
@@ -22,9 +21,8 @@ $(function() {
 			$('#logginPanel').show();
 
 		}).always(function(){
-			$('#loader').css('visibility','hidden');
+			$('#loader').remove();
 			$('body').css('background-color','#fff');
-    		console.log('hide invoked');
 		});
     });
 });

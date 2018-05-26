@@ -1,6 +1,5 @@
 <%@ page language='java' contentType='text/html; charset=UTF-8'
     pageEncoding='UTF-8'%>
-<!-- Barra de navegación ver 0.1 configurada-->
 <nav class='navbar navbar-expand-lg navbar-dark bg-dark' id = 'navPanel'>
 	<a class='navbar-brand' href='#'>Facturación Electrónica</a>
     <button class='navbar-toggler' type='button' data-toggle='collapse' 
@@ -11,10 +10,14 @@
     <div class='collapse navbar-collapse justify-content-end' id='navbarNav'>
     	<ul class='navbar-nav '>
 	        <li class='nav-item'>
-	        	<a class='nav-link' href='#' onclick='cargarMenu("procesosMenu","procesos")'>Procesos</a>
+	        	<a class='nav-link' href='#' onclick='cargarMenu("procesos")'>Procesos</a>
 	        </li>
-	        <li class='nav-item'><a class='nav-link' href='#'>Monitoreo</a></li>
-	        <li class='nav-item'><a class='nav-link' href='#'>Reportes</a></li>
+	        <li class='nav-item'>
+	        	<a class='nav-link' href='#' onclick='cargarMenu("monitoreo")'>Monitoreo</a>
+	        </li>
+	        <li class='nav-item'>
+	        	<a class='nav-link' href='#' onclick='cargarMenu("reportes")'>Reportes</a>
+	        </li>
 	        <li class='nav-item dropdown'>
 	        	<a  class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink'
 	            data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
@@ -30,5 +33,14 @@
 	</div>
 </nav>
 
-<!-- Menu principal-->
-<%@ include file='menu.jsp' %>  
+<div class='container-fluid' id = "menuPanel" style = 'margin-top: 2px; padding-left: 2px;'>
+	<div class='row'>
+		<div class='col-lg-2' id ='leftMenu'>
+
+    	</div>
+		<div class='col-lg-10' id = 'mainContent'>
+        
+    	</div>
+	</div>
+</div>
+        

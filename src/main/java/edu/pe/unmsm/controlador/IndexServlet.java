@@ -11,14 +11,14 @@ import java.io.IOException;
 
 
 @WebServlet(name = "IndexController", urlPatterns= {"/IndexController"})
-public class IndexController extends HttpServlet{
+public class IndexServlet extends HttpServlet{
 
 	public void doPost(HttpServletRequest request, 
 		HttpServletResponse response) throws ServletException,IOException{
 
 		request.setAttribute("user",request.getParameter("user"));
 		request.setAttribute("pass",request.getParameter("pass"));
-		request.getRequestDispatcher("vista/barraNavegacion.jsp").forward(request,response);
+		request.getRequestDispatcher("vista/contenidoPrincipal.jsp").forward(request,response);
 	}
 
 }

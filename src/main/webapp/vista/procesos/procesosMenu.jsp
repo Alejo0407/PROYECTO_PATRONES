@@ -6,9 +6,9 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navLotes' 
-        	aria-expanded='true' aria-controls='collapseOne'
-        	style='text-decoration: none;'>
+        <button class='btn bg-dark text-light btn-block text-left' 
+        	data-toggle='collapse' data-target='#navBajas' 
+        	aria-expanded='true' aria-controls='collapseOne'>
           Lotes
         </button>
       </h5>
@@ -26,7 +26,8 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navDiarios' 
+        <button class='btn bg-dark text-light btn-block text-left' 
+        	data-toggle='collapse' data-target='#navDiarios' 
         	aria-expanded='true' aria-controls='collapseOne'>
           Diarios
         </button>
@@ -48,7 +49,8 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navBajas' 
+        <button class='btn bg-dark text-light btn-block text-left' 
+        	data-toggle='collapse' data-target='#navBajas' 
         	aria-expanded='true' aria-controls='collapseOne'>
           Bajas
         </button>
@@ -69,8 +71,8 @@
   <div class='card'>
     <div class='card-header bg-dark text-light' id='headingOne'>
       <h5 class='mb-0'>
-        <button class='btn bg-dark text-light' data-toggle='collapse' data-target='#navEmergencia' 
-        	aria-expanded='true' aria-controls='collapseOne'>
+        <button class='btn bg-dark text-light btn-block text-left' 
+        	data-toggle='collapse' data-target='#navEmergencia' aria-expanded='true' aria-controls='collapseOne'>
           Emergencia
         </button>
       </h5>
@@ -84,4 +86,5 @@
       </div>
     </div>
   </div>
+
  </div>

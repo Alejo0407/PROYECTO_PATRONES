@@ -1,13 +1,13 @@
 
-function cargarMenu(menuName,folderName){
+function cargarMenu(menuName){
 	var data = {
-		menu:menuName,
-		folder:folderName
+		menu:menuName
 	};
 	$.post('MenuController',data ,function(responseText){
 		
 	}).done(function(responseText){
 		$('#leftMenu').empty();
+		$('#mainContent').empty();
 		$('#leftMenu').append(responseText);
 	}).fail(function(){
 		alert('error');
