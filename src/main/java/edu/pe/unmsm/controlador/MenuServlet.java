@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.io.PrintWriter;
 
 @WebServlet(name = "MenuController", urlPatterns= {"/MenuController"})
 public class MenuServlet extends HttpServlet{
@@ -23,34 +25,68 @@ public class MenuServlet extends HttpServlet{
 		//La llave el mapa debe ser la cabecera de la función,
 		//También se convertirá en los id de paneles
 		//Debe ser de maximo una palabra
-		HashMap<String,String[]> menu = new HashMap<>();
+		ArrayList<String> cabeceras 	= new ArrayList<>();
+		ArrayList<String[]> detalles 	= new ArrayList<>();
+		ArrayList<String[]> rutas 		= new ArrayList<>();
+
 		if(pageName.equalsIgnoreCase("procesos")){
 
-			String[] op4 = {"Reenvío de Documentos"};
-			menu.put("Emergencia",op4);
-
-			String[] op3 = {"Anular Documento","Anular Documento (Error del sistema)"};
-			menu.put("Bajas",op3);
+			String[] op1 = {"Generador en lotes"};
+			String[] r1 = {"procesos/lotes/generador.jsp"};
+			cabeceras.add("Lotes");
+			detalles.add(op1);
+			rutas.add(r1);
 
 			String[] op2 = {"Resumen Diario","Estado de Resumen Diario","Estado de Resumen de Bajas"};
-			menu.put("Diarios",op2);
+			String[] r2 = {
+				"procesos/resumen/resumenDiario.jsp",
+				"procesos/resumen/estadoResumenDiario.jsp",
+				"procesos/resumen/estadoResumenBajas.jsp"
+			};
+			cabeceras.add("Resumen");
+			detalles.add(op2);
+			rutas.add(r2);
 
-			String[] op1 = {"Generador en lotes"};
-			menu.put("Lotes",op1);
+			String[] op3 = {"Anular Documento","Anular Documento (Error del sistema)"};
+			String[] r3 = {
+				"procesos/bajas/anular.jsp",
+				"procesos/bajas/anularError.jsp"
+			};
+			cabeceras.add("Bajas");
+			detalles.add(op3);
+			rutas.add(r3);
+
+			String[] op4 = {"Reenvío de Documentos"};
+			String[] r4 = {"procesos/emergencia/reenvio.jsp"};
+			cabeceras.add("Emergencia");
+			detalles.add(op4);
+			rutas.add(r4);
 
 		}
 		else if(pageName.equalsIgnoreCase("monitoreo")){
 			String[] op1 = {"Monitoreo de documentos"};
-			menu.put("Monitoreo",op1);
+			String[] r1 = {"monitoreo/monitoreo/monitoreo.jsp"};
+			cabeceras.add("Monitoreo");
+			detalles.add(op1);
+			rutas.add(r1);
 		}
 		else if(pageName.equalsIgnoreCase("reportes")){
 			String[] op1 = {"Resumen de Ventas"};
-			menu.put("Ventas",op1);
+			String[] r1 = {"resumen/ventas/resumenVentas.jsp"};
+			cabeceras.add("Ventas");
+			detalles.add(op1);
+			rutas.add(r1);
 		}
-
+		else{
+			try(PrintWriter out = response.getWriter()){
+				out.write("{\"error\":\"Error en el procesamiento de la vista\"}");
+				return;
+			}
+		}
 		System.gc();
-
-		request.setAttribute("datosMenu",menu);
+		request.setAttribute("cabeceras",cabeceras);
+		request.setAttribute("detalles",detalles);
+		request.setAttribute("rutas",rutas);
 		request.getRequestDispatcher("vista/menu.jsp").forward(request,response);
 
 	}

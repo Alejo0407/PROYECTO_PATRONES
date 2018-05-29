@@ -7,22 +7,20 @@ $(function() {
 			pass:$('input[name=password]').val()
 		};
 
-		$('#logginPanel').hide();
-		$('body').css('background-color','gray');
-		$('body').append('<div id="loader"></div>');
+		//$('#logginPanel').hide();
+		$('body').append('<div id="bloqueo"><div id="loader"></div></div>');
     	
     	$.post("IndexController", formData,function(responseText) {
     		
 		}).done(function(responseText){
 			$('body').append(responseText);
+			$('#logginPanel').hide();
 			
 		}).fail(function(){
 			alert('hubo un error');
-			$('#logginPanel').show();
 
 		}).always(function(){
-			$('#loader').remove();
-			$('body').css('background-color','#fff');
+			$('#bloqueo').remove();
 		});
     });
 });

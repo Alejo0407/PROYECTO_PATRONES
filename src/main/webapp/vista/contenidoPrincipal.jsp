@@ -24,8 +24,8 @@
 	            Usuario
 	            </a>
 	            <div class='dropdown-menu dropdown-menu-right' aria-labelledby='navbarDropdownMenuLink'>
-		            <a class='dropdown-item' href='#'>Perfil</a>
-		            <a class='dropdown-item' href='#'>Configuración</a>
+		            <a class='dropdown-item' href='#' onclick='cargarMenu("perfil")'>Perfil</a>
+		            <a class='dropdown-item' href='#' onclick='cargarMenu("config")'>Configuración</a>
 		            <a class='dropdown-item' href='#' onclick='loggout()'>Salir</a>
 	            </div>
 	        </li>
