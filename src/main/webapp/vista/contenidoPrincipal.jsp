@@ -5,10 +5,11 @@
 
 <%
 System.out.println("Esto es una prueba");
-MenuBean[] menus = new MenuBean[3];
+MenuBean[] menus = new MenuBean[4];
 menus[0] 	= (MenuBean)request.getAttribute("menuProcesos");
 menus[1] 	= (MenuBean)request.getAttribute("menuMonitoreo");
 menus[2] 	= (MenuBean)request.getAttribute("menuReportes");
+menus[3]	= (MenuBean)request.getAttribute("menuUsuarios");
 %>
 
 <nav class='navbar navbar-expand-lg navbar-dark bg-dark' id = 'navPanel'>
@@ -32,13 +33,17 @@ menus[2] 	= (MenuBean)request.getAttribute("menuReportes");
             <%
             for(int k = 0 ; k < menu.getCabeceras().size() ; k++){
             %>
+            	<%
+            	if(!menu.getCabeceras().get(k).trim().isEmpty()){
+            	%>
             	<h6 class="dropdown-header"><%=menu.getCabeceras().get(k)%></h6>
             	<%
+            	}
             	String[][] valor = menu.getContenido().get(k);
             	for(int i = 0 ; i < valor[0].length ; i++){
             	%>
             		<a class='dropdown-item' href='#' 
-            			onclick='invocarContenido("<%=valor[1][i]%>")'>
+            			onclick='<%=valor[1][i]%>'>
             			<%=valor[0][i]%>		
             		</a>
             	<%
@@ -55,18 +60,7 @@ menus[2] 	= (MenuBean)request.getAttribute("menuReportes");
         <%
     	}
     	%>
-    	<li class='nav-item dropdown'>
-	        	<a  class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink'
-	            data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-	            Usuario
-	            </a>
-	            <div class='dropdown-menu dropdown-menu-right' aria-labelledby='navbarDropdownMenuLink'>
-		            <a class='dropdown-item' href='#' >Perfil</a>
-		            <a class='dropdown-item' href='#' >Configuración</a>
-		            <a class='dropdown-item' href='#' onclick='loggout()'>Salir</a>
-	            </div>
-	        </li>
-   		</ul>
+    	
 	</div>
 </nav>
 

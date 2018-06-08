@@ -34,11 +34,12 @@ public class IndexServlet extends HttpServlet{
 			MenuBean menuProcesos 	= this.generarMenuProcesos();
 			MenuBean menuMonitoreo 	= this.generarMenuMonitoreo();
 			MenuBean menuReportes 	= this.generarMenuReportes();
-
+			MenuBean menuUsuarios  	= this.generarMenuUsuarios();
 
 			request.setAttribute("menuProcesos",menuProcesos);
 			request.setAttribute("menuMonitoreo",menuMonitoreo);
 			request.setAttribute("menuReportes",menuReportes);
+			request.setAttribute("menuUsuarios",menuUsuarios);
 
 			response.setContentType("text/html");
 			request.getRequestDispatcher("vista/contenidoPrincipal.jsp")
@@ -62,7 +63,7 @@ public class IndexServlet extends HttpServlet{
 		MenuBean menuProcesos = new MenuBean("Procesos");
 		String[][] opciones1 = {
 			{"Generador en lotes"},
-			{"procesos/lotes/generador.jsp"}
+			{"invocarContenido(\"procesos/lotes/generador.jsp\")"}
 		};
 		
 		String[][] opciones2 = {
@@ -70,22 +71,22 @@ public class IndexServlet extends HttpServlet{
 			,"Estado de Resumen Diario"
 			,"Estado de Resumen de Bajas"},
 			
-			{"procesos/resumen/resumenDiario.jsp",
-			"procesos/resumen/estadoResumenDiario.jsp",
-			"procesos/resumen/estadoResumenBajas.jsp"}
+			{"invocarContenido(\"procesos/resumen/resumenDiario.jsp\")",
+			"invocarContenido(\"procesos/resumen/estadoResumenDiario.jsp\")",
+			"invocarContenido(\"procesos/resumen/estadoResumenBajas.jsp\")"}
 		};
 
 		String[][] opciones3 = {
 			{"Anular Documento",
 			"Anular Documento (Error del sistema)"},
 
-			{"procesos/bajas/anular.jsp",
-			"procesos/bajas/anularError.jsp"}
+			{"invocarContenido(\"procesos/bajas/anular.jsp\")",
+			"invocarContenido(\"procesos/bajas/anularError.jsp\")"}
 		};
 
 		String[][] opciones4 = {
 			{"Reenvío de Documentos"},
-			{"procesos/emergencia/reenvio.jsp"}
+			{"invocarContenido(\"procesos/emergencia/reenvio.jsp\")"}
 		};
 
 		menuProcesos.put("Lotes",opciones1);
@@ -101,7 +102,7 @@ public class IndexServlet extends HttpServlet{
 		MenuBean menuMonitoreo = new MenuBean("Monitoreo");
 		String[][] opciones = {
 			{"Monitoreo de documentos"},
-			{"monitoreo/monitoreo/monitoreo.jsp"}
+			{"invocarContenido(\"monitoreo/monitoreo/monitoreo.jsp\")"}
 		};
 		menuMonitoreo.put("Visualizar",opciones);
 
@@ -114,10 +115,43 @@ public class IndexServlet extends HttpServlet{
 		MenuBean menuReportes = new MenuBean("Reportes");
 		String[][] opciones = {
 			{"Resumen de Ventas"},
-			{"resumen/ventas/resumenVentas.jsp"}
+			{"invocarContenido(\"resumen/ventas/resumenVentas.jsp\")"}
 		};
 		menuReportes.put("Ventas",opciones);
 
 		return menuReportes;
+	}
+
+	private MenuBean generarMenuUsuarios(){
+		//Menu de procesos
+		MenuBean menuUsuarios = new MenuBean("Usuario");
+		
+		String[][] opciones1 = {
+			{"Crear Usuario"
+			,"Modificar Usuario"
+			,"Eliminar Usuario"},
+			
+			{"invocarContenido(\"usuarios/gestion/crearUsuario.jsp\")",
+			"invocarContenido(\"usuarios/gestion/modificarUsuario.jsp\")",
+			"invocarContenido(\"usuarios/gestion/eliminarUsuario.jsp\")"}
+		};
+		String[][] opciones2 = {
+			{"Configuración de Sistema"
+			,"Datos de la Empresa"},
+			
+			{"invocarContenido(\"usuarios/config/configSistema.jsp\")",
+			"invocarContenido(\"usuarios/config/configEmpresa.jsp\")"}
+		};
+		String[][] opciones3 = {
+			{"Perfil","Salir"},
+			{"invocarContenido(\"usuarios/gestion/modificarUsuario.jsp\")","loggout()"}
+		};
+
+
+		menuUsuarios.put("Gestión de Usuarios",opciones1);
+		menuUsuarios.put("Configuraciones",opciones2);
+		menuUsuarios.put("",opciones3);
+
+		return menuUsuarios;
 	}
 }

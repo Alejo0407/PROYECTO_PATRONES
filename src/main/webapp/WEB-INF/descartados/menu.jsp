@@ -47,4 +47,18 @@ ArrayList<String[]> rutas = (ArrayList<String[]>)request.getAttribute("rutas");
 	%>
 
 </div>
+
+
+<li class='nav-item dropdown'>
+            <a  class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink'
+              data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+              Usuario
+              </a>
+              <div class='dropdown-menu dropdown-menu-right' aria-labelledby='navbarDropdownMenuLink'>
+                <a class='dropdown-item' href='#' >Perfil</a>
+                <a class='dropdown-item' href='#' >Configuración</a>
+                <a class='dropdown-item' href='#' onclick='loggout()'>Salir</a>
+              </div>
+          </li>
+      </ul>
 -->
