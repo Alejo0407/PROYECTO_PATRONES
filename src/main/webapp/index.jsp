@@ -13,7 +13,6 @@
         <script type='text/javascript' src='webjars/bootstrap/4.1.0/js/bootstrap.min.js'></script>
 		<script type='text/javascript' src='js/index-script.js' ></script>
         <script type='text/javascript' src='js/contenidoPrincipal-script.js'></script>
-        <script type='text/javascript' src='js/menu-script.js'></script>
 
     </head>
     <body>
