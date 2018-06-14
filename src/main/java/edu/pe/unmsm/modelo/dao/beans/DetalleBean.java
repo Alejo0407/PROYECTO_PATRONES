@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class DetalleBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5076695033112913643L;
+
 	public DetalleBean(){}
 
 	private String transaccion;
@@ -19,7 +24,8 @@ public class DetalleBean implements Serializable{
 	private String codigoIsc;
 	private Double otrosTributos;
 	private Double total;
-
+	private Date fecha;
+	
 	public void setTransaccion(String transaccion){
 		this.transaccion = transaccion;
 	}
@@ -98,6 +104,12 @@ public class DetalleBean implements Serializable{
 	}
 	public Double getTotal(){
 		return this.total;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 
 }

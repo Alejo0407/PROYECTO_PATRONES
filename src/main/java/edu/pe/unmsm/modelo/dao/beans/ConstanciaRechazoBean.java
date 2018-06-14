@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.sql.Blob;
 
 public class ConstanciaRechazoBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2085158666294491584L;
+
 	public ConstanciaRechazoBean(){}
 
 	private String serieElectronica;

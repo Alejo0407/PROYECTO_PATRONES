@@ -26,7 +26,7 @@ public class SistemaDaoImpl{
 				"SELECT * FROM fe.sistema")
 			){
 
-			SistemaBean sistema = new SistemaBean();
+			sistema = new SistemaBean();
 			sistema.setReporteador(rs.getString(1));
 			sistema.setVerificarBoletas(rs.getBoolean(2));
 		}
@@ -35,8 +35,7 @@ public class SistemaDaoImpl{
 	}
 
 	public int updateSistema(SistemaBean sistema) throws SQLException{
-		int retorno = 0;
-		try(PreparedStatement pst = conexion.PreparedStatement(
+		try(PreparedStatement pst = conexion.prepareStatement(
 			"UPDATE fe.sistema SET reporter = ?, verificar_boletas = ?",
 			ResultSet.TYPE_FORWARD_ONLY,
 			ResultSet.CONCUR_UPDATABLE
@@ -52,9 +51,29 @@ public class SistemaDaoImpl{
 			else
 				pst.setNull(2,Types.BOOLEAN);
 
-			retorno = pst.executeUpdate();
+			return pst.executeUpdate();
 		}
-		return retorno;
+	}
+
+	public int insertSistema(SistemaBean sistema) throws SQLException{
+		try(PreparedStatement pst = conexion.prepareStatement(
+			"INSERT INTO fe.sistema (reporter, verificar_boletas) VALUES (?,?) ",
+			ResultSet.TYPE_FORWARD_ONLY,
+			ResultSet.CONCUR_UPDATABLE
+			)){
+
+			if(sistema.getReporteador() != null)
+				pst.setString(1,sistema.getReporteador());
+			else
+				pst.setNull(1,Types.VARCHAR);
+
+			if(sistema.getVerificarBoletas() != null)
+				pst.setBoolean(2,sistema.getVerificarBoletas());
+			else
+				pst.setNull(2,Types.BOOLEAN);
+
+			return pst.executeUpdate();
+		}
 	}
 
 

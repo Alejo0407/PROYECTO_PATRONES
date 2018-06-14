@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class CorrelacionBean implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8399814305619461773L;
+
 	public CorrelacionBean(){}
 
 	private Integer tipoDocumento;

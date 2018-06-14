@@ -120,4 +120,9 @@ public class NullEmpresaBean extends EmpresaBean{
 		else
 			return super.getPassword();
 	}
+
+	@Override
+	public boolean isNull(){
+		return true;
+	}
 }

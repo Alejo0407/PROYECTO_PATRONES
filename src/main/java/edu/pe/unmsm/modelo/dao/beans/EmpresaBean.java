@@ -141,4 +141,8 @@ public class EmpresaBean implements Serializable{
 	public String getPassword(){
 		return this.password;	
 	}
+
+	public boolean isNull(){
+		return false;
+	}
 }

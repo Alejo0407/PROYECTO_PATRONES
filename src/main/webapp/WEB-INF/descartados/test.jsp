@@ -1,7 +1,5 @@
-<%@ page language='java' contentType='text/html; charset=UTF-8'
-    pageEncoding='UTF-8'%>
-    <!DOCTYPE html>
-<%@ page import = "edu.pe.unmsm.controlador.beans.TestBean"%>
+
+<!--
 <html lang='es'>
 	<head>
 		<title>Prueba de Bean</title>
@@ -14,4 +12,5 @@
 			<jsp:getProperty property = "edad" name = "bean"/><br/>
 		</form>
 	</body>
-</html>
+
+</html>-->
