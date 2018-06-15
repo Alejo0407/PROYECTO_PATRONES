@@ -4,8 +4,6 @@ package edu.pe.unmsm.modelo.dao;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Blob;
 import java.sql.Types;
 
 import edu.pe.unmsm.modelo.dao.beans.ConstanciaRechazoBean;
@@ -24,9 +22,7 @@ public class ConstanciaRechazoDaoImpl{
 
 	public int addConstancia(ConstanciaRechazoBean constancia) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
-			"INSERT INTO fe.cdr_rechazos VALUES (?,?,?,?,?)",
-			ResultSet.TYPE_FORWARD_ONLY,
-			ResultSet.CONCUR_UPDATABLE
+			"INSERT INTO fe.cdr_rechazos VALUES (?,?,?,?,?)"
 			)){
 			
 			if(constancia.getSerieElectronica() != null)

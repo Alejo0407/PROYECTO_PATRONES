@@ -1,6 +1,11 @@
 package edu.pe.unmsm.modelo.dao.beans;
 
 public class NullEmpresaBean extends EmpresaBean{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3338131781545795107L;
+
 	@Override
 	public String getRuc(){
 		if(super.getRuc() == null)

@@ -6,6 +6,12 @@ import java.io.Serializable;
 
 public class MenuBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8595082929634514816L;
+
+
 	public MenuBean(){}
 
 	public MenuBean(String id){

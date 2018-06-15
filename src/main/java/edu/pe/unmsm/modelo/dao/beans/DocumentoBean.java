@@ -5,6 +5,11 @@ import java.sql.Blob;
 import java.sql.Date;
 
 public class DocumentoBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8993614219633060256L;
+
 	public DocumentoBean(){}
 
 	private String transaccion;
@@ -107,7 +112,7 @@ public class DocumentoBean implements Serializable{
 	public void setTotal(Double total){
 		this.total = total;
 	}
-	public void setSerieElectronica(String setSerieElectronica){
+	public void setSerieElectronica(String serieElectronica){
 		this.serieElectronica = serieElectronica;
 	}
 	public void setNumeroElectronico(Integer numeroElectronico){

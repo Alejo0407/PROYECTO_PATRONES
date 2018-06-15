@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class UsuarioBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3763783196130849673L;
+
 	public UsuarioBean(){}
 
 	private String id;
@@ -11,7 +16,7 @@ public class UsuarioBean implements Serializable{
 	private String nombres;
 	private String apellidos;
 	private String correo;
-	private Integer rango;
+	private Integer rango = 2;
 
 	public void setId(String id){
 		this.id = id;

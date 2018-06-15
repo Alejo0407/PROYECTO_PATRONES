@@ -3,6 +3,11 @@ package edu.pe.unmsm.modelo.dao.beans;
 import java.io.Serializable;
 
 public class SistemaBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8408684403794879264L;
+
 	public SistemaBean(){}
 
 	private String reporteador;

@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class URLBean implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8110867697586813154L;
+
 	public URLBean(){}
 
 	private Integer id;
@@ -21,7 +26,7 @@ public class URLBean implements Serializable{
 	public void setValor(String valor){
 		this.valor = valor;
 	}
-	public void setDescripcion(String label){
+	public void setLabel(String label){
 		this.label = label;
 	}
 	public void setActivo(Boolean activo){

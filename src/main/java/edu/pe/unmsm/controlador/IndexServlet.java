@@ -13,6 +13,11 @@ import edu.pe.unmsm.controlador.beans.MenuBean;
 @WebServlet(name = "IndexController", urlPatterns= {"/IndexController"})
 public class IndexServlet extends HttpServlet{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8147367836198537361L;
+
 	public void doPost(HttpServletRequest request, 
 		HttpServletResponse response) throws ServletException,IOException{
 

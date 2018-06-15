@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.sql.Blob;
 
 public class EmpresaBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4784966906845006385L;
+
 	public EmpresaBean(){}
 
 	private String ruc;

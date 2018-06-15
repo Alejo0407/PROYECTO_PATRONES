@@ -36,9 +36,7 @@ public class SistemaDaoImpl{
 
 	public int updateSistema(SistemaBean sistema) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
-			"UPDATE fe.sistema SET reporter = ?, verificar_boletas = ?",
-			ResultSet.TYPE_FORWARD_ONLY,
-			ResultSet.CONCUR_UPDATABLE
+			"UPDATE fe.sistema SET reporter = ?, verificar_boletas = ?"
 			)){
 
 			if(sistema.getReporteador() != null)
@@ -57,9 +55,7 @@ public class SistemaDaoImpl{
 
 	public int insertSistema(SistemaBean sistema) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
-			"INSERT INTO fe.sistema (reporter, verificar_boletas) VALUES (?,?) ",
-			ResultSet.TYPE_FORWARD_ONLY,
-			ResultSet.CONCUR_UPDATABLE
+			"INSERT INTO fe.sistema (reporter, verificar_boletas) VALUES (?,?) "
 			)){
 
 			if(sistema.getReporteador() != null)
