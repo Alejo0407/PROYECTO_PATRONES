@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 
 import edu.pe.unmsm.modelo.dao.beans.EmpresaBean;
 import edu.pe.unmsm.modelo.dao.beans.NullEmpresaBean;
@@ -82,10 +81,7 @@ public class EmpresaDaoBean {
 			pst.setString(9, empresa.getTelefono());
 			pst.setString(10, empresa.getEmail());
 			pst.setString(11, empresa.getWeb());
-			if(empresa.getCertificado() != null)
-				pst.setBlob(12, empresa.getCertificado());
-			else
-				pst.setNull(12, Types.BLOB);
+			pst.setBlob(12, empresa.getCertificado());
 			pst.setString(13, empresa.getNombreCertificado());
 			pst.setString(14, empresa.getPin());
 			pst.setString(15, empresa.getPinRevocar());

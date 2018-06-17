@@ -125,14 +125,21 @@ public class ResumenDaoImpl {
 				"ticket,archivo_sunat,nom_archivo_sunat) "+
 				"VALUES (?,?,?,?,?,?,?,?,?) ")){
 			
+			if(resumen.getFechaGeneracion() == null)
+				throw new SQLException("La fecha de generación del resumen no puede ser nula");
 			pst.setDate(1, resumen.getFechaGeneracion());
+			if(resumen.getCorrelativo() == null)
+				throw new SQLException("El correlativo no puede ser nulo");
 			pst.setInt(2, resumen.getCorrelativo());
+			if(resumen.getTipo() == null)
+				throw new SQLException("El tipo de resumen no puede ser nulo");
 			pst.setString(3, resumen.getTipo());
+			if(resumen.getFechaGeneracion() == null)
+				throw new SQLException("La fecha de referencia del resumen no puede ser nula");
 			pst.setDate(4, resumen.getFechaReferencia());
-			if(resumen.getArchivo() != null)
-				pst.setBlob(5, resumen.getArchivo());
-			else
-				pst.setNull(5, Types.BLOB);
+			if(resumen.getArchivo() == null)
+				throw new SQLException("EL archivo de resumen no puede ser nulo");
+			pst.setBlob(5, resumen.getArchivo());
 
 			pst.setString(6, resumen.getNombreArchivo());
 			pst.setString(7, resumen.getTicket());

@@ -57,8 +57,11 @@ public class DetalleDaoImpl {
 				"(transaccion,sec,codigo,denominacion,unidad,valunitario,cantidad,"+
 				"igv,codigv,isc,codisc,otros,valtotal,fecha) "+
 				"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ")){
-			
+			if(detalle.getTransaccion() == null)
+				throw new SQLException("La transaccion en el detalle no puede ser nulo");
 			pst.setString(1, detalle.getTransaccion());
+			if(detalle.getNumeroItem() == null)
+				throw new SQLException("El numero del item no puede ser nulo");
 			pst.setString(2, detalle.getNumeroItem());
 			pst.setString(3, detalle.getCodigo());
 			pst.setString(4, detalle.getDescripcion());
@@ -72,8 +75,6 @@ public class DetalleDaoImpl {
 			pst.setDouble(12, detalle.getOtrosTributos()!=null?detalle.getOtrosTributos():0.00);
 			pst.setDouble(13, detalle.getTotal()!=null?detalle.getTotal():0.00);
 			pst.setDate(14, detalle.getFecha());
-
-			
 			return pst.executeUpdate();
 		}
 	}
