@@ -19,11 +19,13 @@ public class DocumentoBean implements Serializable{
 	private Integer numeroOriginal;
 	private Date fechaEmision;
 	private Date fechaVencimiento;
-	private Character tipoCliente;
+	private String tipoCliente;
 	private String numeroCliente;
+	private String nombreCliente;
 	private String direccion;
 	private String provincia;
 	private String departamento;
+	private String distrito;
 	private String email;
 	private Double valorVentaAfecta;
 	private Double valorVentaInafecta;
@@ -67,7 +69,7 @@ public class DocumentoBean implements Serializable{
 	public void setFechaVencimiento(Date fechaVencimiento){
 		this.fechaVencimiento = fechaVencimiento;
 	}
-	public void setTipoCliente(Character tipoCliente){
+	public void setTipoCliente(String tipoCliente){
 		this.tipoCliente = tipoCliente;
 	}
 	public void setNumeroCliente(String numeroCliente){
@@ -168,7 +170,7 @@ public class DocumentoBean implements Serializable{
 	public Date getFechaVencimiento(){
 		return this.fechaVencimiento;
 	}
-	public Character getTipoCliente(){
+	public String getTipoCliente(){
 		return this.tipoCliente;
 	}
 	public String getNumeroCliente(){
@@ -245,5 +247,17 @@ public class DocumentoBean implements Serializable{
 	}
 	public Integer getResumenId(){
 		return this.resumenId;
+	}
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+	public String getDistrito() {
+		return distrito;
+	}
+	public void setDistrito(String distrito) {
+		this.distrito = distrito;
 	}
 }

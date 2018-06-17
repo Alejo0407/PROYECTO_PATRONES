@@ -25,85 +25,84 @@ public class DetalleBean implements Serializable{
 	private Double otrosTributos;
 	private Double total;
 	private Date fecha;
-	
-	public void setTransaccion(String transaccion){
+
+	public String getTransaccion() {
+		return transaccion;
+	}
+	public void setTransaccion(String transaccion) {
 		this.transaccion = transaccion;
 	}
-	public void setNumeroItem(String numeroItem){
+	public String getNumeroItem() {
+		return numeroItem;
+	}
+	public void setNumeroItem(String numeroItem) {
 		this.numeroItem = numeroItem;
 	}
-	public void setCodigo(String codigo){
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	public void setDescripcion(String descripcion){
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public void setCodigoUnidad(String codigoUnidad){
+	public String getCodigoUnidad() {
+		return codigoUnidad;
+	}
+	public void setCodigoUnidad(String codigoUnidad) {
 		this.codigoUnidad = codigoUnidad;
 	}
-	public void setValorUnitario(Double valorUnitario){
+	public Double getValorUnitario() {
+		return valorUnitario;
+	}
+	public void setValorUnitario(Double valorUnitario) {
 		this.valorUnitario = valorUnitario;
 	}
-	public void setCantidad(Double cantidad){
+	public Double getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(Double cantidad) {
 		this.cantidad = cantidad;
 	}
-	public void setIgv(Double igv){
+	public Double getIgv() {
+		return igv;
+	}
+	public void setIgv(Double igv) {
 		this.igv = igv;
 	}
-	public void setCodigoIgv(String codigoIgv){
+	public String getCodigoIgv() {
+		return codigoIgv;
+	}
+	public void setCodigoIgv(String codigoIgv) {
 		this.codigoIgv = codigoIgv;
 	}
-	public void setIsc(Double isc){
+	public Double getIsc() {
+		return isc;
+	}
+	public void setIsc(Double isc) {
 		this.isc = isc;
 	}
-	public void setCodigoIsc(String codigoIsc){
+	public String getCodigoIsc() {
+		return codigoIsc;
+	}
+	public void setCodigoIsc(String codigoIsc) {
 		this.codigoIsc = codigoIsc;
 	}
-	public void setOtrosTributos(Double otrosTributos){
+	public Double getOtrosTributos() {
+		return otrosTributos;
+	}
+	public void setOtrosTributos(Double otrosTributos) {
 		this.otrosTributos = otrosTributos;
 	}
-	public void setTotal(Double total){
+	public Double getTotal() {
+		return total;
+	}
+	public void setTotal(Double total) {
 		this.total = total;
-	}
-
-	public String getTransaccion(){
-		return this.transaccion;
-	}
-	public String setNumeroItem(){
-		return this.numeroItem;
-	}
-	public String setCodigo(){
-		return this.codigo;
-	}
-	public String setDescripcion(){
-		return this.descripcion;
-	}
-	public String setCodigoUnidad(){
-		return this.codigoUnidad;
-	}
-	public Double setValorUnitario(){
-		return this.valorUnitario;
-	}
-	public Double setCantidad(){
-		return this.cantidad;
-	}
-	public Double getIgv(){
-		return this.igv;
-	}
-	public String getCodigoIgv(){
-		return this.codigoIgv;
-	}
-	public Double getIsc(){
-		return this.isc;
-	}
-	public String getCodigoIsc(){
-		return this.codigoIsc;
-	}
-	public Double getOtrosTributos(){
-		return this.otrosTributos;
-	}
-	public Double getTotal(){
-		return this.total;
 	}
 	public Date getFecha() {
 		return fecha;
@@ -111,5 +110,7 @@ public class DetalleBean implements Serializable{
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+	
+	
 
 }

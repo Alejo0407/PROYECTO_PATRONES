@@ -11,12 +11,7 @@ import java.util.List;
 import edu.pe.unmsm.modelo.dao.beans.CorrelacionBean;
 
 public class CorrelacionDaoImpl {
-	
-	public static final int TIPO_FACTURA = 1;
-	public static final int TIPO_BOLETA = 3;
-	public static final int TIPO_NOTA_CREDITO = 7;
-	public static final int TIPO_NOTA_DEBITO = 8;
-	
+
 	public Connection conexion;
 
 	public CorrelacionDaoImpl(Connection conexion){
@@ -24,7 +19,7 @@ public class CorrelacionDaoImpl {
 	}
 	
 	/**
-	 * Usar uno de los parametros de la CLASE para definir el tipo
+	 * Usar uno de los parametros de la CLASE Tipo Documento para definir el tipo
 	 * @param tipo
 	 * @return
 	 * @throws SQLException 
