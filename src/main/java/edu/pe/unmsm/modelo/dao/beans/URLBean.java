@@ -12,6 +12,7 @@ public class URLBean implements Serializable{
 	public URLBean(){}
 
 	private Integer id;
+	private Integer idTipo;
 	private String tipo;
 	private String valor;
 	private String label;
@@ -47,5 +48,11 @@ public class URLBean implements Serializable{
 	}
 	public Boolean getActivo(){
 		return this.activo;
+	}
+	public Integer getIdTipo() {
+		return idTipo;
+	}
+	public void setIdTipo(Integer idTipo) {
+		this.idTipo = idTipo;
 	}
 }

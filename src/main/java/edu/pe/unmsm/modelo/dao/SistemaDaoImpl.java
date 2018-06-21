@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import edu.pe.unmsm.modelo.dao.beans.SistemaBean;
-public class SistemaDaoImpl{
+public class SistemaDaoImpl implements SistemaDao{
 
 	public Connection conexion;
 
@@ -16,6 +16,10 @@ public class SistemaDaoImpl{
 		this.conexion = conexion;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.SistemaDao#getSistema()
+	 */
+	@Override
 	public SistemaBean getSistema() throws SQLException{
 		SistemaBean sistema = null;
 		try(Statement st = conexion.createStatement( 
@@ -34,6 +38,10 @@ public class SistemaDaoImpl{
 		return sistema;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.SistemaDao#updateSistema(edu.pe.unmsm.modelo.dao.beans.SistemaBean)
+	 */
+	@Override
 	public int updateSistema(SistemaBean sistema) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 			"UPDATE fe.sistema SET reporter = ?, verificar_boletas = ?"
@@ -53,6 +61,10 @@ public class SistemaDaoImpl{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.SistemaDao#insertSistema(edu.pe.unmsm.modelo.dao.beans.SistemaBean)
+	 */
+	@Override
 	public int insertSistema(SistemaBean sistema) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 			"INSERT INTO fe.sistema (reporter, verificar_boletas) VALUES (?,?) "

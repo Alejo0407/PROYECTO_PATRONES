@@ -11,7 +11,7 @@ import java.util.List;
 
 import edu.pe.unmsm.modelo.dao.beans.UsuarioBean;
 
-public class UsuarioDaoImpl{
+public class UsuarioDaoImpl implements UsuarioDao{
 
 	public Connection conexion;
 
@@ -19,6 +19,10 @@ public class UsuarioDaoImpl{
 		this.conexion = conexion;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.UsuarioDao#listUsuarios()
+	 */
+	@Override
 	public List<UsuarioBean> listUsuarios() throws SQLException{
 		try(Statement st = conexion.createStatement(
 				ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -44,6 +48,10 @@ public class UsuarioDaoImpl{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.UsuarioDao#getUsuario(java.lang.String)
+	 */
+	@Override
 	public UsuarioBean getUsuario(String id) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT id_usuario,pass,correo,nombres,apellido,id_rango "+ 
@@ -68,6 +76,10 @@ public class UsuarioDaoImpl{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.UsuarioDao#addUsuario(edu.pe.unmsm.modelo.dao.beans.UsuarioBean)
+	 */
+	@Override
 	public int addUsuario(UsuarioBean usuario) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"INSERT INTO fe.usuarios "+
@@ -90,6 +102,10 @@ public class UsuarioDaoImpl{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.UsuarioDao#updateUsuario(edu.pe.unmsm.modelo.dao.beans.UsuarioBean)
+	 */
+	@Override
 	public int updateUsuario(UsuarioBean usuario) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.usuarios "+
@@ -113,6 +129,10 @@ public class UsuarioDaoImpl{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.UsuarioDao#deleteUsuario(java.lang.String)
+	 */
+	@Override
 	public int deleteUsuario(String id) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"DELETE FROM fe.usuarios "+
@@ -122,6 +142,10 @@ public class UsuarioDaoImpl{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.UsuarioDao#instanceUsuario()
+	 */
+	@Override
 	public UsuarioBean instanceUsuario() {
 		return new UsuarioBean();
 	}

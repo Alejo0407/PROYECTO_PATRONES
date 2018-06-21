@@ -9,13 +9,17 @@ import java.sql.Statement;
 import edu.pe.unmsm.modelo.dao.beans.EmpresaBean;
 import edu.pe.unmsm.modelo.dao.beans.NullEmpresaBean;
 
-public class EmpresaDaoBean {
+public class EmpresaDaoBean implements EmpresaDao {
 	public Connection conexion;
 
 	public EmpresaDaoBean(Connection conexion){
 		this.conexion = conexion;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.EmpresaDao#getEmpresa()
+	 */
+	@Override
 	public EmpresaBean getEmpresa() throws SQLException{
 		try(Statement st = conexion.createStatement(
 				ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -53,6 +57,10 @@ public class EmpresaDaoBean {
 		}	
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.EmpresaDao#updateEmpresa(edu.pe.unmsm.modelo.dao.beans.EmpresaBean)
+	 */
+	@Override
 	public int updateEmpresa(EmpresaBean empresa) throws SQLException{
 		
 		String sqlInsert = "INSERT INTO fe.empresa "+

@@ -10,7 +10,7 @@ import java.util.List;
 
 import edu.pe.unmsm.modelo.dao.beans.DetalleBean;
 
-public class DetalleDaoImpl {
+public class DetalleDaoImpl implements DetalleDao {
 	
 	private Connection conexion;
 	
@@ -18,6 +18,10 @@ public class DetalleDaoImpl {
 		this.conexion = conexion;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#listDetalle(java.lang.String)
+	 */
+	@Override
 	public List<DetalleBean> listDetalle(String transaccion) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT * FROM fe.detdocumentos "+
@@ -51,6 +55,10 @@ public class DetalleDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#addDetalle(edu.pe.unmsm.modelo.dao.beans.DetalleBean)
+	 */
+	@Override
 	public int addDetalle(DetalleBean detalle) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"INSERT INTO fe.detdocumentos "+
@@ -79,6 +87,10 @@ public class DetalleDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#deleteDetalle(edu.pe.unmsm.modelo.dao.beans.DetalleBean)
+	 */
+	@Override
 	public int deleteDetalle(DetalleBean detalle) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"DELETE FROM fe.detdocumentos "+
@@ -90,6 +102,10 @@ public class DetalleDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#deleteDetalle(java.sql.Date)
+	 */
+	@Override
 	public int deleteDetalle(Date fecha) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"DELETE FROM fe.detdocumentos "+
@@ -99,6 +115,10 @@ public class DetalleDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#deleteDetalle(java.lang.String)
+	 */
+	@Override
 	public int deleteDetalle(String transaccion) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"DELETE FROM fe.detdocumentos "+
@@ -109,6 +129,36 @@ public class DetalleDaoImpl {
 		}
 	}
 	
+	public int deleteDetalle(Date fecha, int tipo) throws SQLException {
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"DELETE FROM fe.detdocumentos "+
+				"WHERE transaccion IN (SELECT transaccion FROM fe.cabdocumentos "+
+				"WHERE fechaemision = ? and tipodocumento = ? and homologado != 1 ) ")){
+			pst.setDate(1, fecha);
+			pst.setInt(2, tipo);
+			
+			return pst.executeUpdate();
+		}
+	}
+	
+	public int deleteDetalle(Date fecha, int tipo, boolean borrarRechazados) throws SQLException {
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"DELETE FROM fe.detdocumentos "+
+				"WHERE transaccion IN (SELECT transaccion FROM fe.cabdocumentos "+
+				"WHERE fechaemision = ? and tipodocumento = ? and homologado != 1 "+
+				(borrarRechazados?"":" AND homologado != -2 ")+") ")){
+			
+			pst.setDate(1, fecha);
+			pst.setInt(2, tipo);
+			
+			return pst.executeUpdate();
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#updateDetalle(edu.pe.unmsm.modelo.dao.beans.DetalleBean)
+	 */
+	@Override
 	public int updateDetalle(DetalleBean detalle) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.detdocumentos "+
@@ -133,6 +183,10 @@ public class DetalleDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#instanceDetalle()
+	 */
+	@Override
 	public DetalleBean instanceDetalle() throws SQLException{
 		return new DetalleBean();
 	}

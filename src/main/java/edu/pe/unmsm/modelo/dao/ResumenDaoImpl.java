@@ -11,17 +11,17 @@ import java.util.List;
 
 import edu.pe.unmsm.modelo.dao.beans.ResumenBean;
 
-public class ResumenDaoImpl {
-	public static final String RESUMEN_BAJAS = "RA";
-	public static final String RESUMEN_DIARIO = "RC";
-	
-	
+public class ResumenDaoImpl implements ResumenDao {
 	private Connection conexion;
 	
 	public ResumenDaoImpl(Connection conexion) {
 		this.conexion = conexion;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ResumenDao#listResumenes(java.sql.Date, boolean)
+	 */
+	@Override
 	public List<ResumenBean> listResumenes(Date fecha, boolean fReferencia) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT * FROM fe.resumenes "+
@@ -55,6 +55,10 @@ public class ResumenDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ResumenDao#listResumenes(java.sql.Date, boolean, java.lang.String)
+	 */
+	@Override
 	public List<ResumenBean> listResumenes(Date fecha, boolean fReferencia, String tipo) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT * FROM fe.resumenes "+
@@ -87,6 +91,10 @@ public class ResumenDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ResumenDao#getResumenBean(java.lang.String)
+	 */
+	@Override
 	public ResumenBean getResumenBean(String ticket) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT * FROM fe.resumenes "+
@@ -117,6 +125,10 @@ public class ResumenDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ResumenDao#addResumen(edu.pe.unmsm.modelo.dao.beans.ResumenBean)
+	 */
+	@Override
 	public int addResumen(ResumenBean resumen) throws SQLException{
 		
 		try(PreparedStatement pst = conexion.prepareStatement(
@@ -154,6 +166,10 @@ public class ResumenDaoImpl {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ResumenDao#updateResumen(edu.pe.unmsm.modelo.dao.beans.ResumenBean)
+	 */
+	@Override
 	public int updateResumen(ResumenBean resumen) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.resumenes "+
@@ -181,6 +197,10 @@ public class ResumenDaoImpl {
 			return pst.executeUpdate();
 		}
 	}
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ResumenDao#instanceResumen()
+	 */
+	@Override
 	public ResumenBean instanceResumen() {
 		return new ResumenBean();
 	}

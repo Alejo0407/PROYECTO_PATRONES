@@ -11,13 +11,17 @@ import java.util.List;
 
 import edu.pe.unmsm.modelo.dao.beans.DocumentoBean;
 
-public class DocumentoDaoImpl {
+public class DocumentoDaoImpl implements DocumentoDao {
 	
 	private Connection conexion;
 	
 	public DocumentoDaoImpl(Connection conexion) {
 		this.conexion = conexion;
 	}
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#listDocumentos()
+	 */
+	@Override
 	public List<DocumentoBean> listDocumentos() throws SQLException{
 		
 		try(PreparedStatement pst = conexion.prepareStatement(
@@ -69,6 +73,10 @@ public class DocumentoDaoImpl {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#listDocumentos(java.sql.Date, int)
+	 */
+	@Override
 	public List<DocumentoBean> listDocumentos(Date fecha, int tipo) throws SQLException{
 		
 		try(PreparedStatement pst = conexion.prepareStatement(
@@ -126,6 +134,10 @@ public class DocumentoDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#listDocumentos(java.sql.Date, java.sql.Date, int)
+	 */
+	@Override
 	public List<DocumentoBean> listDocumentos(Date fechaInicio, Date fechaFin, int tipo) throws SQLException{
 		
 		try(PreparedStatement pst = conexion.prepareStatement(
@@ -184,6 +196,10 @@ public class DocumentoDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#addDocumento(edu.pe.unmsm.modelo.dao.beans.DocumentoBean)
+	 */
+	@Override
 	public int addDocumento(DocumentoBean documento) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"INSERT INTO fe.cabdocumentos "+
@@ -251,6 +267,10 @@ public class DocumentoDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#updateAllDocumento(edu.pe.unmsm.modelo.dao.beans.DocumentoBean)
+	 */
+	@Override
 	public int updateAllDocumento(DocumentoBean documento) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.cabdocumentos "+
@@ -319,6 +339,10 @@ public class DocumentoDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#updatePartDocumento(edu.pe.unmsm.modelo.dao.beans.DocumentoBean)
+	 */
+	@Override
 	public int updatePartDocumento(DocumentoBean documento) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.cabdocumentos "+
@@ -354,6 +378,10 @@ public class DocumentoDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#deleteDocumento(java.lang.String)
+	 */
+	@Override
 	public int deleteDocumento(String transaccion) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"DELETE FROM fe.cabdocumentos "+
@@ -363,15 +391,46 @@ public class DocumentoDaoImpl {
 		}
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#deleteDocumento(java.sql.Date)
+	 */
+	@Override
 	public int deleteDocumento(Date fechaEmision) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"DELETE FROM fe.cabdocumentos "+
-				"WHERE fechaemision = ? ")){
+				"WHERE fechaemision = ? AND homologado != 1 ")){
 			pst.setDate(1, fechaEmision);
 			return pst.executeUpdate();
 		}
 	}
 	
+	public int deleteDocumento(Date fechaEmision, int tipo) throws SQLException{
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"DELETE FROM fe.cabdocumentos "+
+				"WHERE fechaemision = ? AND tipodocumento = ? AND homologado != 1 ")){
+			pst.setDate(1, fechaEmision);
+			pst.setInt(2, tipo);
+			return pst.executeUpdate();
+		}
+	}
+	
+	public int deleteDocumento(Date fechaEmision, int tipo, boolean borrarRechazados) throws SQLException{
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"DELETE FROM fe.cabdocumentos "+
+				"WHERE fechaemision = ? AND tipodocumento = ? "+
+				(borrarRechazados?"":" AND homologado != -2 ")+" AND homologado != 1 ")){
+			
+			pst.setDate(1, fechaEmision);
+			pst.setInt(2, tipo);
+			return pst.executeUpdate();
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#instanceDocumento()
+	 */
+	@Override
 	public DocumentoBean instanceDocumento() {
 		return new DocumentoBean();
 	}

@@ -10,7 +10,7 @@ import java.util.List;
 
 import edu.pe.unmsm.modelo.dao.beans.CorrelacionBean;
 
-public class CorrelacionDaoImpl {
+public class CorrelacionDaoImpl implements CorrelacionDao {
 
 	public Connection conexion;
 
@@ -18,12 +18,10 @@ public class CorrelacionDaoImpl {
 		this.conexion = conexion;
 	}
 	
-	/**
-	 * Usar uno de los parametros de la CLASE Tipo Documento para definir el tipo
-	 * @param tipo
-	 * @return
-	 * @throws SQLException 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.CorrelacionDao#getCorrelacion(int)
 	 */
+	@Override
 	public CorrelacionBean getCorrelacion(int tipo) throws SQLException {
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT tipo_doc,serie,correlativo "+
@@ -44,6 +42,10 @@ public class CorrelacionDaoImpl {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.CorrelacionDao#listCorrelacion()
+	 */
+	@Override
 	public List<CorrelacionBean> listCorrelacion() throws SQLException{
 		try(Statement pst = conexion.createStatement(
 				ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -65,6 +67,10 @@ public class CorrelacionDaoImpl {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.CorrelacionDao#updateCorrelacion(edu.pe.unmsm.modelo.dao.beans.CorrelacionBean)
+	 */
+	@Override
 	public int updateCorrelacion(CorrelacionBean cor) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.correlacion set serie = ?, correlativo = ? "+

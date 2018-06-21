@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 
 import edu.pe.unmsm.modelo.dao.beans.ConstanciaRechazoBean;
 
-public class ConstanciaRechazoDaoImpl{
+public class ConstanciaRechazoDaoImpl implements ConstanciaRechazoDao{
 
 	public Connection conexion;
 
@@ -15,10 +15,18 @@ public class ConstanciaRechazoDaoImpl{
 		this.conexion = conexion;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ConstanciaRechazoDao#instanceConstancia()
+	 */
+	@Override
 	public ConstanciaRechazoBean instanceConstancia(){
 		return new ConstanciaRechazoBean();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.pe.unmsm.modelo.dao.ConstanciaRechazoDao#addConstancia(edu.pe.unmsm.modelo.dao.beans.ConstanciaRechazoBean)
+	 */
+	@Override
 	public int addConstancia(ConstanciaRechazoBean constancia) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 			"INSERT INTO fe.cdr_rechazos VALUES (?,?,?,?,?)"
