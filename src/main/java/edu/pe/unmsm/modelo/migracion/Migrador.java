@@ -1,4 +1,4 @@
-package edu.pe.unmsm.modelo;
+package edu.pe.unmsm.modelo.migracion;
 
 import java.sql.Date;
 import java.sql.SQLException;

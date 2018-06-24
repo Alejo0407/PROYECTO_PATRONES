@@ -1,4 +1,4 @@
-package edu.pe.unmsm.modelo;
+package edu.pe.unmsm.modelo.migracion;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,10 +17,10 @@ import edu.pe.unmsm.modelo.dao.TipoDocumento;
 import edu.pe.unmsm.modelo.dao.beans.DetalleBean;
 import edu.pe.unmsm.modelo.dao.beans.DocumentoBean;
 
-public class MigradorBoletas extends Migrador {
+public class MigradorFacturas extends Migrador {
 	
 	private Connection origen;
-	public MigradorBoletas(DocumentoDao docDao, DetalleDao detalleDao
+	public MigradorFacturas(DocumentoDao docDao, DetalleDao detalleDao
 			, Connection origen) {
 		super(docDao, detalleDao);
 		this.origen = origen;
@@ -28,12 +28,12 @@ public class MigradorBoletas extends Migrador {
 
 	@Override
 	protected void limpiarDatos(Date fecha, boolean corregido) throws SQLException{
-		int afectadas = this.getDetalleDao().deleteDetalle(fecha, TipoDocumento.TIPO_BOLETA ,corregido);
+		int afectadas = this.getDetalleDao().deleteDetalle(fecha, TipoDocumento.TIPO_FACTURA ,corregido);
 		
 		if(afectadas == 0)
 			Logger.getGlobal().log(Level.WARNING, "Ningúna línea fue afectada en el borrado del Detalle");
 		
-		afectadas = this.getDocDao().deleteDocumento(fecha, TipoDocumento.TIPO_BOLETA ,corregido);
+		afectadas = this.getDocDao().deleteDocumento(fecha, TipoDocumento.TIPO_FACTURA ,corregido);
 		if(afectadas == 0)
 			Logger.getGlobal().log(Level.WARNING, "Ningúna línea fue afectada en el borrado de la Cabecera");
 		
@@ -42,7 +42,7 @@ public class MigradorBoletas extends Migrador {
 	@Override
 	protected List<DocumentoBean> extraerCabeceras(Date fecha) throws SQLException{
 		// TODO Auto-generated method stub
-		List<DocumentoBean> docs = this.getDocDao().listDocumentos(fecha, TipoDocumento.TIPO_BOLETA);
+		List<DocumentoBean> docs = this.getDocDao().listDocumentos(fecha, TipoDocumento.TIPO_FACTURA);
 		
 		String valor = "";
 		for(DocumentoBean doc:docs) {
@@ -76,7 +76,7 @@ public class MigradorBoletas extends Migrador {
 					"INNER JOIN m_tipo_docu_impr " + 
 					"ON m_sali.TDOI_P_inCODTIP=m_tipo_docu_impr.TDOI_P_inCODTIP " + 
 					"WHERE m_sali.sali_chfecsal=\""+getDateAsString(fecha)+"\" \"" +valor +"\"  " + 
-					"AND m_tipo_docu_impr.TDOI_chNOMTIP <> 'FACTURA' AND m_sali.SALI_inSITSAL <> 4  " + 
+					"AND m_tipo_docu_impr.TDOI_chNOMTIP = 'FACTURA' AND m_sali.SALI_inSITSAL <> 4  " + 
 					"ORDER BY m_sali.TDOI_P_inCODTIP,m_sali.SALI_chNRODOC\"");
 				
 			){
@@ -176,5 +176,4 @@ public class MigradorBoletas extends Migrador {
 				dia = String.format("%02d", date.get(GregorianCalendar.DATE));
 		return anio+mes+dia;
 	}
-
 }

@@ -1,4 +1,4 @@
-package edu.pe.unmsm.modelo.mail;
+package edu.pe.unmsm.modelo.generador.mail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,9 +19,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import edu.pe.unmsm.modelo.utils.Lector;
 
-public class MensajeroResumen extends Mensajero {
+public class MensajeroDocumento extends Mensajero {
 
-	public MensajeroResumen(String url, String usuario, String pass, String ruc, File xml) {
+	public MensajeroDocumento(String url, String usuario, String pass, String ruc, File xml) {
 		super(url, usuario, pass, ruc,xml);
 	}
 
@@ -48,16 +48,16 @@ public class MensajeroResumen extends Mensajero {
 		pass.addTextNode(password);
 		
 		
+		
 		//CUERPO
 		SOAPBody body = message.getSOAPBody();
-		SOAPElement be1 = body.addChildElement("sendSummary", "ser");
+		SOAPElement be1 = body.addChildElement("sendBill", "ser");
 		SOAPElement filename = be1.addChildElement("fileName");
 		filename.addTextNode(getArchivo().getName());
 		SOAPElement content = be1.addChildElement("contentFile");
 		String cont = new Lector().encodeToBase64(getArchivo().getAbsolutePath());
 		content.addTextNode(cont);
 	
-		
 		//System.out.println("SOAP-REQUEST");
 		//message.writeTo(System.out);
 		

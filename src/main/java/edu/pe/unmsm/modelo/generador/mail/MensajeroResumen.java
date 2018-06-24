@@ -1,8 +1,9 @@
-package edu.pe.unmsm.modelo.mail;
+package edu.pe.unmsm.modelo.generador.mail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
@@ -16,17 +17,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
-public class MensajeroStatus extends Mensajero {
-	
-	private String ticket;
-	public MensajeroStatus(String url, String usuario, String pass,
-			String ruc, File xml, String ticket) {
+import edu.pe.unmsm.modelo.utils.Lector;
+
+public class MensajeroResumen extends Mensajero {
+
+	public MensajeroResumen(String url, String usuario, String pass, String ruc, File xml) {
 		super(url, usuario, pass, ruc,xml);
-		this.ticket = ticket;
 	}
 
 	@Override
-	SOAPMessage request(String ruc, String usr, String password) throws SOAPException {
+	SOAPMessage request(String ruc, String usr, String password) throws SOAPException, IOException {
+		// TODO Auto-generated method stub
 		MessageFactory mf = MessageFactory.newInstance();
 		SOAPMessage message = mf.createMessage();
 		
@@ -43,16 +44,20 @@ public class MensajeroStatus extends Mensajero {
 		SOAPElement user = he2.addChildElement("Username", "wsse");
 		SOAPElement pass = he2.addChildElement("Password", "wsse");
 		
-		
 		user.addTextNode(ruc+usr);//RUC+USUARIO
 		pass.addTextNode(password);
 		
+		
 		//CUERPO
 		SOAPBody body = message.getSOAPBody();
-		SOAPElement be1 = body.addChildElement("getStatus", "ser");
-		SOAPElement filename = be1.addChildElement("ticket");
-		filename.addTextNode(ticket);
+		SOAPElement be1 = body.addChildElement("sendSummary", "ser");
+		SOAPElement filename = be1.addChildElement("fileName");
+		filename.addTextNode(getArchivo().getName());
+		SOAPElement content = be1.addChildElement("contentFile");
+		String cont = new Lector().encodeToBase64(getArchivo().getAbsolutePath());
+		content.addTextNode(cont);
 	
+		
 		//System.out.println("SOAP-REQUEST");
 		//message.writeTo(System.out);
 		
@@ -61,24 +66,20 @@ public class MensajeroStatus extends Mensajero {
 
 	@Override
 	File response(SOAPMessage response) throws SOAPException, TransformerException, FileNotFoundException {
+		// TODO Auto-generated method stub
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		Source sourceContent = response.getSOAPPart().getContent();
 		
 		File resp = new File("response-"+this.getArchivo().getName());
-		StreamResult rs = new StreamResult(new FileOutputStream(resp));
+		StreamResult rs = new StreamResult(new FileOutputStream("response-"+this.getArchivo().getName()));
 		transformer.transform(sourceContent, rs);
 		return resp;
 	}
 
 	@Override
 	void decode() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public void setTicket(String ticket) {
-		this.ticket = ticket;
+		
 	}
 
 }

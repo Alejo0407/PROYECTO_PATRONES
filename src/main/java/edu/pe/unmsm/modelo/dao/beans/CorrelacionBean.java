@@ -33,4 +33,28 @@ public class CorrelacionBean implements Serializable{
 	public Integer getCorrelativo(){
 		return this.correlativo;
 	}
+	
+	public void aumentarCorrelacion()  {
+		if(correlativo.intValue() == 99999999) {
+			char c[] = getSerie().toCharArray();
+			
+			for(int i = serie.length() -1 ; i >= 0 ; i-- ) {
+				int val =  (int)serie.charAt( i );
+				if( (val >='0' && val < '9') || (val >= 'A' && val < 'Z') ) 
+					val++;
+				else if( val == '9') 
+					val = 'A';
+				else 
+					val = '0';
+				c[i] = (char)val;
+				if(val == '0' && i == 0)
+					System.err.println("ERROR");
+				if( val != '0')
+					break;
+			}
+			setCorrelativo(1);
+			setSerie(String.valueOf(c[0]) + String.valueOf(c[1])  + String.valueOf(c[2]));
+		}else
+			setCorrelativo(correlativo.intValue()+1);		
+	}
 }

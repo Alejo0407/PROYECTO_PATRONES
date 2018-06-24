@@ -54,6 +54,39 @@ public class DetalleDaoImpl implements DetalleDao {
 			}
 		}
 	}
+	@Override
+	public List<DetalleBean> listDetalle(Date fecha) throws SQLException{
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"SELECT * FROM fe.detdocumentos "+
+				"WHERE fecha = ? ",
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_READ_ONLY)){
+			pst.setDate(1, fecha);
+			try(ResultSet rs = pst.executeQuery()){
+				List<DetalleBean> detalles = new ArrayList<>();
+				while(rs.next()) {
+					DetalleBean detalle = new DetalleBean();
+					detalle.setTransaccion(rs.getString(1));
+					detalle.setNumeroItem(rs.getString(2));
+					detalle.setCodigo(rs.getString(3));
+					detalle.setDescripcion(rs.getString(4));
+					detalle.setCodigoUnidad(rs.getString(5));
+					detalle.setValorUnitario(rs.getDouble(6));
+					detalle.setCantidad(rs.getDouble(7));
+					detalle.setIgv(rs.getDouble(8));
+					detalle.setCodigoIgv(rs.getString(9));
+					detalle.setIsc(rs.getDouble(10));
+					detalle.setCodigoIsc(rs.getString(11));
+					detalle.setOtrosTributos(rs.getDouble(12));
+					detalle.setTotal(rs.getDouble(13));
+					detalle.setFecha(rs.getDate(14));
+					
+					detalles.add(detalle);
+				}
+				return detalles;
+			}
+		}
+	}
 	
 	/* (non-Javadoc)
 	 * @see edu.pe.unmsm.modelo.dao.DetalleDao#addDetalle(edu.pe.unmsm.modelo.dao.beans.DetalleBean)

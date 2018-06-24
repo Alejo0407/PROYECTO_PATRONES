@@ -1,4 +1,4 @@
-package edu.pe.unmsm.modelo.xml;
+package edu.pe.unmsm.modelo.generador.xml;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import edu.pe.unmsm.modelo.dao.beans.EmpresaBean;
 
 public class XMLFactory {
 	
-	private static final int COD_FACTURA = 1;
-	private static final int COD_BOLETA = 2;
+	public static final int COD_FACTURA = 1;
+	public static final int COD_BOLETA = 2;
 	
-	private static final int COD_RESUMEN_DIARIO = 1;
-	private static final int COD_RESUMEN_BAJAS=  2;
+	public static final int COD_RESUMEN_DIARIO = 1;
+	public static final int COD_RESUMEN_BAJAS=  2;
 	/**
 	 * Retorna una factura o boleta dependiendo del codigo ingresado en el campo tipo 
 	 * el cual compara con los codigos de BeanManager

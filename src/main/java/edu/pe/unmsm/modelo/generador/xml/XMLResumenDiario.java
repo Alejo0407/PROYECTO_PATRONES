@@ -1,4 +1,4 @@
-package edu.pe.unmsm.modelo.xml;
+package edu.pe.unmsm.modelo.generador.xml;
 
 import java.io.File;
 import java.util.GregorianCalendar;

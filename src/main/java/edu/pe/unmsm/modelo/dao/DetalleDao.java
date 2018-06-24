@@ -26,4 +26,6 @@ public interface DetalleDao {
 
 	DetalleBean instanceDetalle() throws SQLException;
 
+	List<DetalleBean> listDetalle(Date fecha) throws SQLException;
+
 }

@@ -29,7 +29,7 @@ public class ConstanciaRechazoBean implements Serializable{
 	public void setNumero(Integer numero){
 		this.numero = numero;
 	}
-	public void setNumero(Blob cdr){
+	public void setCdr(Blob cdr){
 		this.cdr = cdr;
 	}
 

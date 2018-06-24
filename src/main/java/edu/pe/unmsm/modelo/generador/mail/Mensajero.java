@@ -1,4 +1,4 @@
-package edu.pe.unmsm.modelo.mail;
+package edu.pe.unmsm.modelo.generador.mail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +18,18 @@ public abstract class Mensajero {
 	
 	private File archivo;
 	
+	//DECODED FILES
+	
+	//PARA LOS DOCUMENTOS y el CDR
+	private byte[] respuesta;
+	private String nombreRespuesta;
+	private String mimeRespuesta;
+	private int estado;
+	
+	//PARA LOS RESUMENES
+	private String ticket;
+	//GENERICO
+	private String mensaje;
 	
 	public Mensajero(String url, String usuario, String pass, String ruc, File xml) {
 		this.url = url;
@@ -47,6 +59,46 @@ public abstract class Mensajero {
 
 	public void setArchivo(File archivo) {
 		this.archivo = archivo;
+	}
+
+	public byte[] getRespuesta() {
+		return respuesta;
+	}
+
+	public void setRespuesta(byte[] respuesta) {
+		this.respuesta = respuesta;
+	}
+
+	public String getNombreRespuesta() {
+		return nombreRespuesta;
+	}
+
+	public void setNombreRespuesta(String nombreRespuesta) {
+		this.nombreRespuesta = nombreRespuesta;
+	}
+
+	public String getMimeRespuesta() {
+		return mimeRespuesta;
+	}
+
+	public void setMimeRespuesta(String mimeRespuesta) {
+		this.mimeRespuesta = mimeRespuesta;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 	
 }

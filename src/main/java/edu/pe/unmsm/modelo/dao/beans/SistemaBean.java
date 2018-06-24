@@ -12,7 +12,8 @@ public class SistemaBean implements Serializable{
 
 	private String reporteador;
 	private Boolean verificarBoletas;
-
+	private String betaCode = "MODDATOS";
+	
 	public void setReporteador(String reporteador){
 		this.reporteador = reporteador;
 	}
@@ -27,5 +28,13 @@ public class SistemaBean implements Serializable{
 
 	public Boolean getVerificarBoletas(){
 		return this.verificarBoletas;
+	}
+
+	public String getBetaCode() {
+		return betaCode;
+	}
+
+	public void setBetaCode(String betaCode) {
+		this.betaCode = betaCode;
 	}
 }
