@@ -30,4 +30,9 @@ public interface DocumentoDao {
 
 	DocumentoBean instanceDocumento();
 
+	int updateDocumento(String serieElectronica, int numeroElectronico, int homologado, String transaccion)
+			throws SQLException;
+
+	int updateDocumento(int idResumen, String transaccion) throws SQLException;
+
 }

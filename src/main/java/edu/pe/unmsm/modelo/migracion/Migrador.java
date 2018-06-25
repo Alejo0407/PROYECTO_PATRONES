@@ -3,6 +3,8 @@ package edu.pe.unmsm.modelo.migracion;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import edu.pe.unmsm.modelo.dao.DetalleDao;
@@ -36,6 +38,8 @@ public abstract class Migrador {
 					.filter(p -> p.getTransaccion().equals(doc.getTransaccion()))
 					.collect(Collectors.toList());
 			
+			Logger.getGlobal().log(Level.INFO, "MIGRANDO "+doc.getTipo()+
+					"..."  + doc.getSerieOriginal()+"-"+doc.getNumeroOriginal());
 			for(DetalleBean d:det) 
 				detalleDao.addDetalle(d);
 			

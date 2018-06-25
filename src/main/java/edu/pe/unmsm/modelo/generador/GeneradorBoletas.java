@@ -30,6 +30,7 @@ import edu.pe.unmsm.modelo.dao.beans.URLBean;
 import edu.pe.unmsm.modelo.generador.mail.Mensajero;
 import edu.pe.unmsm.modelo.generador.mail.MensajeroDocumento;
 import edu.pe.unmsm.modelo.generador.xml.XMLFactory;
+import edu.pe.unmsm.modelo.utils.Compresor;
 
 public class GeneradorBoletas implements GeneradorDocumentos {
 
@@ -75,12 +76,18 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 		List<DetalleBean> detalles = this.detalleDao.listDetalle(fecha);
 		
 		EmpresaBean empresa = empresaDao.getEmpresa();
+		
+		if(empresa.isNull())
+			throw new NullPointerException("Los datos de la empresa están vacíos");
+		
+		
 		URLBean url = urlDao.getActivos().stream()
 				.filter(u -> u.getId() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS )
 				.findFirst()
 				.get();
 		
 		Mensajero mensajero;
+		Compresor compresor = new Compresor();
 		
 		if(empresa.isNull())
 			throw new NullPointerException("Los datos de la empresa están vacíos");
@@ -106,7 +113,8 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 			File xml = xmlFactory.getXMLFacturaBoleta(
 					factura, detalleFactura, empresa, nombre,
 					correlacion.getSerie(), String.format("%d", correlacion.getCorrelativo()+1), 
-					XMLFactory.COD_FACTURA).generarDocumento();
+					XMLFactory.COD_BOLETA).generarDocumento();
+			File zip = compresor.comprimir(xml.getName(), nombre + ".zip");
 			
 			mensajero = new MensajeroDocumento(url.getValor(),
 					(url.getLabel().equalsIgnoreCase("beta")?
@@ -114,7 +122,7 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 					(url.getLabel().equalsIgnoreCase("beta")?
 							sistema.getBetaCode():empresa.getPassword()),
 					empresa.getRuc(),
-					xml
+					zip
 			);
 			if(sistema.getVerificarBoletas()) {
 				
@@ -122,6 +130,9 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 
 				Logger.getGlobal().log(Level.INFO, "DOCUMENTO ENVIADO A LA SUNAT - "+ nombre +"... ");
 			}
+			else
+				mensajero.setEstado(1);
+			
 			this.state = getState(mensajero.getEstado(),factura,xml,mensajero,correlacion);
 			state.registrar();
 			if(mensajero.getEstado() != -1 ) {
@@ -130,6 +141,13 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 			}
 			
 			Logger.getGlobal().log(Level.INFO, "DOCUMENTO GENERADO - "+ nombre +"... ");
+			
+			//BORRAMOS LOS ARCHIVOS
+			/*
+			mensajero.getResponse().delete();
+			xml.delete();
+			zip.delete();
+			*/
 		}
 		return facturas;
 	}
@@ -142,6 +160,7 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 			Logger.getGlobal().log(Level.INFO, "ENVIO... intento " + i);
 			try {
 				mensajero.enviar();
+				break;
 			}
 			catch(UnsupportedOperationException | SOAPException 
 					| IOException | TransformerException e) {

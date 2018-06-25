@@ -9,10 +9,10 @@ import java.sql.Statement;
 import edu.pe.unmsm.modelo.dao.beans.EmpresaBean;
 import edu.pe.unmsm.modelo.dao.beans.NullEmpresaBean;
 
-public class EmpresaDaoBean implements EmpresaDao {
+public class EmpresaDaoImpl implements EmpresaDao {
 	public Connection conexion;
 
-	public EmpresaDaoBean(Connection conexion){
+	public EmpresaDaoImpl(Connection conexion){
 		this.conexion = conexion;
 	}
 	

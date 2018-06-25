@@ -80,7 +80,7 @@ public class Compresor {
 	 * @throws IOException 
 	 * 
 	 */
-	public void comprimir(String nombre_origen, String nombre_destino) throws NullPointerException, IOException{
+	public File comprimir(String nombre_origen, String nombre_destino) throws NullPointerException, IOException{
 		
 		if(nombre_origen.isEmpty() || nombre_destino.isEmpty())
 			throw new NullPointerException("Uno de los parámetros no es válido");
@@ -103,6 +103,8 @@ public class Compresor {
 		zipOut.close();
 		in.close();
 		out.close();
+		
+		return new File(outputFile);
 	}
 	
 	public void cerrar(){

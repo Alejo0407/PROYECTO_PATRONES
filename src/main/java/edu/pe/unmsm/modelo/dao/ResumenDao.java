@@ -8,8 +8,6 @@ import edu.pe.unmsm.modelo.dao.beans.ResumenBean;
 
 public interface ResumenDao {
 
-	String RESUMEN_BAJAS = "RA";
-	String RESUMEN_DIARIO = "RC";
 
 	List<ResumenBean> listResumenes(Date fecha, boolean fReferencia) throws SQLException;
 

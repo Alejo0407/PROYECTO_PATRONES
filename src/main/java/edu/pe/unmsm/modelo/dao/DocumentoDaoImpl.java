@@ -66,7 +66,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 				documento.setRespuestaSunat(rs.getBlob("archivo_homologado"));
 				documento.setNombreRespuestaSunat(rs.getString("nom_archivo_homologado"));
 				documento.setAnulado(rs.getBoolean("anulado"));
-				documento.setResumenId(rs.getInt("resumen_id"));
+				documento.setResumenId(rs.getString("resumen_id") == null? null : rs.getInt("resumen_id"));
 				documentos.add(documento);
 			}
 			return documentos;
@@ -374,6 +374,42 @@ public class DocumentoDaoImpl implements DocumentoDao {
 				throw new SQLException("El campo transacción no puede estar vacío");
 			pst.setString(12, documento.getTransaccion());
 			
+			return pst.executeUpdate();
+		}
+	}
+	@Override
+	public int updateDocumento(String serieElectronica, int numeroElectronico, int homologado, String transaccion) 
+			throws SQLException {
+		
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"UPDATE fe.cabdocumentos "+
+				"SET serieelec = ?,numeroelec = ?,"+
+				"homologado = ? "+
+				"WHERE transaccion = ? ")){
+			
+			
+			pst.setString(1, serieElectronica);
+			pst.setInt(2, numeroElectronico);
+			
+			pst.setInt(3, homologado );
+			pst.setString(5, transaccion);
+			
+			return pst.executeUpdate();
+		}
+	}
+	
+	@Override
+	public int updateDocumento(int idResumen, String transaccion) 
+			throws SQLException {
+		
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"UPDATE fe.cabdocumentos "+
+				"SET resumnen_id = ? "+
+				"WHERE transaccion = ? ")){
+			
+			
+			pst.setInt(1, idResumen);
+			pst.setString(2, transaccion);			
 			return pst.executeUpdate();
 		}
 	}

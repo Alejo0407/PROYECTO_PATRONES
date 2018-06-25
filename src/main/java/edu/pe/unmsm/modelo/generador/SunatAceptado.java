@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
-import edu.pe.unmsm.modelo.dao.ConstanciaRechazoDao;
 import edu.pe.unmsm.modelo.dao.DocumentoDao;
 import edu.pe.unmsm.modelo.dao.beans.CorrelacionBean;
 import edu.pe.unmsm.modelo.dao.beans.DocumentoBean;

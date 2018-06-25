@@ -30,6 +30,8 @@ public abstract class Mensajero {
 	private String ticket;
 	//GENERICO
 	private String mensaje;
+	//
+	private File response;
 	
 	public Mensajero(String url, String usuario, String pass, String ruc, File xml) {
 		this.url = url;
@@ -45,7 +47,7 @@ public abstract class Mensajero {
 		SOAPMessage msj = request(ruc,usuario,pass);
 		SOAPMessage resp = conn.call(msj, url);
 		
-		this.setArchivo(response(resp));
+		this.setResponse(response(resp));
 		decode();
 	}
 	
@@ -99,6 +101,22 @@ public abstract class Mensajero {
 
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	public File getResponse() {
+		return response;
+	}
+
+	public void setResponse(File response) {
+		this.response = response;
+	}
+
+	public String getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
 	}
 	
 }

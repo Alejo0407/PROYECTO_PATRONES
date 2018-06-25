@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
@@ -31,6 +30,7 @@ import edu.pe.unmsm.modelo.dao.beans.URLBean;
 import edu.pe.unmsm.modelo.generador.mail.Mensajero;
 import edu.pe.unmsm.modelo.generador.mail.MensajeroDocumento;
 import edu.pe.unmsm.modelo.generador.xml.XMLFactory;
+import edu.pe.unmsm.modelo.utils.Compresor;
 
 public class GeneradorFacturas implements GeneradorDocumentos {
 	
@@ -77,15 +77,18 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 		List<DetalleBean> detalles = this.detalleDao.listDetalle(fecha);
 		
 		EmpresaBean empresa = empresaDao.getEmpresa();
+		
+		if(empresa.isNull())
+			throw new NullPointerException("Los datos de la empresa están vacíos");
+		
 		URLBean url = urlDao.getActivos().stream()
 				.filter(u -> u.getId() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS )
 				.findFirst()
 				.get();
-		
+		Compresor compresor = new Compresor();
 		Mensajero mensajero;
 		
-		if(empresa.isNull())
-			throw new NullPointerException("Los datos de la empresa están vacíos");
+		
 	
 		Logger.getGlobal().log(Level.INFO, "INICIANDO GENERACION FACTURAS...");
 		
@@ -106,9 +109,11 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 			Logger.getGlobal().log(Level.INFO, "NOMBRE AUX. FACTURA - "+ nombre +"...");
 			
 			File xml = xmlFactory.getXMLFacturaBoleta(
-					factura, detalleFactura, empresa, nombre,
+					factura, detalleFactura, empresa, nombre + ".xml",
 					correlacion.getSerie(), String.format("%d", correlacion.getCorrelativo()+1), 
 					XMLFactory.COD_FACTURA).generarDocumento();
+			
+			File zip = compresor.comprimir(xml.getName(), nombre + ".zip");
 			
 			mensajero = new MensajeroDocumento(url.getValor(),
 					(url.getLabel().equalsIgnoreCase("beta")?
@@ -116,7 +121,7 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 					(url.getLabel().equalsIgnoreCase("beta")?
 							sistema.getBetaCode():empresa.getPassword()),
 					empresa.getRuc(),
-					xml
+					zip
 			);
 			safeSend(mensajero);
 			Logger.getGlobal().log(Level.INFO, "DOCUMENTO ENVIADO A LA SUNAT - "+ nombre +"... ");
@@ -129,6 +134,13 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 			}
 			
 			Logger.getGlobal().log(Level.INFO, "DOCUMENTO GENERADO - "+ nombre +"... ");
+			
+			//BORRAMOS LOS ARCHIVOS
+			/*
+			mensajero.getResponse().delete();
+			xml.delete();
+			zip.delete();
+			*/
 		}
 		return facturas;
 	}
@@ -141,6 +153,7 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 			Logger.getGlobal().log(Level.INFO, "ENVIO... intento " + i);
 			try {
 				mensajero.enviar();
+				break;
 			}
 			catch(UnsupportedOperationException | SOAPException 
 					| IOException | TransformerException e) {
