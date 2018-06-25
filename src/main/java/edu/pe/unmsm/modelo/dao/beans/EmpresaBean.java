@@ -21,6 +21,7 @@ public class EmpresaBean implements Serializable{
 	private String provincia;
 	private String departamento;
 	private String telefono;
+	private String celular;
 	private String email;
 	private String web;
 	private Blob certificado;
@@ -158,5 +159,11 @@ public class EmpresaBean implements Serializable{
 				+ email + ", web=" + web + ", certificado=" + certificado + ", nombreCertificado=" + nombreCertificado
 				+ ", pin=" + pin + ", pinRevocar=" + pinRevocar + ", alias=" + alias + ", usuarioSecundario="
 				+ usuarioSecundario + ", password=" + password + "]";
+	}
+	public String getCelular() {
+		return celular;
+	}
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 }

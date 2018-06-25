@@ -35,4 +35,6 @@ public interface DocumentoDao {
 
 	int updateDocumento(int idResumen, String transaccion) throws SQLException;
 
+	int anular(String transaccion) throws SQLException;
+
 }

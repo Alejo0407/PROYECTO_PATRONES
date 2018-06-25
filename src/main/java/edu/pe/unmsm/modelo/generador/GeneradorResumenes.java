@@ -7,8 +7,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
 import edu.pe.unmsm.modelo.dao.beans.ResumenBean;
 
 public interface GeneradorResumenes {
-	public ResumenBean generar() throws SQLException, ParserConfigurationException, TransformerException, NullPointerException, IOException, UnsupportedOperationException, SOAPException;
+	public ResumenBean generar() throws SQLException, ParserConfigurationException, TransformerException, NullPointerException, IOException, UnsupportedOperationException, SOAPException, SAXException;
 }

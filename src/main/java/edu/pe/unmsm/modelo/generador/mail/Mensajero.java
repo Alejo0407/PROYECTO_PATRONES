@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 public abstract class Mensajero {
 	private String url;
@@ -41,7 +44,7 @@ public abstract class Mensajero {
 		this.archivo = xml;
 	}
 	
-	public void enviar() throws UnsupportedOperationException, SOAPException, IOException, TransformerException {
+	public void enviar() throws UnsupportedOperationException, SOAPException, IOException, TransformerException, SAXException, ParserConfigurationException {
 		SOAPConnectionFactory connFactory = SOAPConnectionFactory.newInstance();
 		SOAPConnection conn = connFactory.createConnection();
 		SOAPMessage msj = request(ruc,usuario,pass);
@@ -53,7 +56,7 @@ public abstract class Mensajero {
 	
 	abstract SOAPMessage request(String ruc,String usr,String password) throws SOAPException, IOException;
 	abstract File response(SOAPMessage response) throws SOAPException,TransformerException,FileNotFoundException;
-	abstract void decode();
+	abstract void decode() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException;
 
 	public File getArchivo() {
 		return archivo;

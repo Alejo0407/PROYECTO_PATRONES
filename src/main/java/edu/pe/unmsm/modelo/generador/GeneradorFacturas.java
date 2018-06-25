@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
 import edu.pe.unmsm.modelo.dao.ConstanciaRechazoDao;
 import edu.pe.unmsm.modelo.dao.CorrelacionDao;
 import edu.pe.unmsm.modelo.dao.DetalleDao;
@@ -67,11 +69,11 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 	@Override
 	public List<DocumentoBean> generar(Date fecha) throws SQLException, NullPointerException,
 			ParserConfigurationException, TransformerException,
-			SOAPException, IOException, UnsupportedOperationException {
+			SOAPException, IOException, UnsupportedOperationException, SAXException {
 		List<DocumentoBean> facturas = 
 				documentoDao.listDocumentos(fecha, TipoDocumento.TIPO_FACTURA)
 				.stream()
-				.filter(f -> f.getHomologado().intValue() != 1)
+				.filter(f -> f.getHomologado().intValue() == 0)
 				.collect(Collectors.toList());
 		
 		List<DetalleBean> detalles = this.detalleDao.listDetalle(fecha);
@@ -82,7 +84,7 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 			throw new NullPointerException("Los datos de la empresa están vacíos");
 		
 		URLBean url = urlDao.getActivos().stream()
-				.filter(u -> u.getId() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS )
+				.filter(u -> u.getIdTipo() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS && u.getActivo())
 				.findFirst()
 				.get();
 		Compresor compresor = new Compresor();
@@ -109,7 +111,7 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 			Logger.getGlobal().log(Level.INFO, "NOMBRE AUX. FACTURA - "+ nombre +"...");
 			
 			File xml = xmlFactory.getXMLFacturaBoleta(
-					factura, detalleFactura, empresa, nombre + ".xml",
+					factura, detalleFactura, empresa, nombre ,
 					correlacion.getSerie(), String.format("%d", correlacion.getCorrelativo()+1), 
 					XMLFactory.COD_FACTURA).generarDocumento();
 			
@@ -135,19 +137,18 @@ public class GeneradorFacturas implements GeneradorDocumentos {
 			
 			Logger.getGlobal().log(Level.INFO, "DOCUMENTO GENERADO - "+ nombre +"... ");
 			
-			//BORRAMOS LOS ARCHIVOS
-			/*
 			mensajero.getResponse().delete();
 			xml.delete();
 			zip.delete();
-			*/
+			if(mensajero.getNombreRespuesta() != null)
+				new File(mensajero.getNombreRespuesta()).delete();
 		}
 		return facturas;
 	}
 	
 
 	private void safeSend(Mensajero mensajero) throws UnsupportedOperationException,SOAPException 
-		,IOException, TransformerException {
+		,IOException, TransformerException, SAXException, ParserConfigurationException {
 		
 		for(int i = 1 ; i < 4 ; i++) {
 			Logger.getGlobal().log(Level.INFO, "ENVIO... intento " + i);

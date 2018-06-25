@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPElement;
@@ -16,6 +19,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import edu.pe.unmsm.modelo.utils.Lector;
 
@@ -71,15 +79,52 @@ public class MensajeroResumen extends Mensajero {
 		Transformer transformer = transformerFactory.newTransformer();
 		Source sourceContent = response.getSOAPPart().getContent();
 		
-		File resp = new File("response-"+this.getArchivo().getName());
-		StreamResult rs = new StreamResult(new FileOutputStream("response-"+this.getArchivo().getName()));
+		String nombreArchivo = this.getArchivo().getName();
+		if(nombreArchivo.contains(".")) {
+			nombreArchivo = nombreArchivo.substring(0,nombreArchivo.indexOf("."));
+		}
+		
+		File resp = new File("response-"+nombreArchivo + ".xml");
+		FileOutputStream fout = new FileOutputStream(resp);
+		StreamResult rs = new StreamResult(fout);
+		
 		transformer.transform(sourceContent, rs);
+		try {
+			fout.close();
+		}catch(Exception e) {}
 		return resp;
 	}
 
 	@Override
-	void decode() {
+	void decode() throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();	
+		Document doc = dBuilder.parse(this.getResponse());
 		
+		NodeList nl = doc.getElementsByTagName("ser:sendSummaryResponse");
+		if(nl != null)
+			nl = doc.getElementsByTagName("br:sendSummaryResponse");
+		
+		if(nl == null)
+			doc.getElementsByTagName("br:sendSummaryResponse");
+				
+		if(nl.getLength() == 0) {
+			String msj = "";
+			nl = doc.getElementsByTagName("soap-env:Fault");
+			nl = nl.item(0).getChildNodes();
+			Node n = nl.item(0);
+			msj += ("["+n.getNodeName()+":"+n.getTextContent()+"]-" );
+			n = nl.item(1);
+			msj += ("["+n.getNodeName()+":"+n.getTextContent()+"]" );
+			setMensaje(msj);
+
+			this.setTicket("-1");
+		}
+		else{
+			NodeList t= doc.getElementsByTagName("ticket");
+			String ticket = t.item(0).getTextContent();
+			this.setTicket(ticket);
+		}
 	}
 
 }

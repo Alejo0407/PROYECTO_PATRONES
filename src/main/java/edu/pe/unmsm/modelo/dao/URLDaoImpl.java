@@ -56,7 +56,7 @@ public class URLDaoImpl implements URLDao {
 				ResultSet.TYPE_SCROLL_SENSITIVE,
 				ResultSet.CONCUR_READ_ONLY);
 			ResultSet rs = st.executeQuery(
-				"SELECT u.id,t.descripcion,u.valor,u.descripcion,u.activo "+
+				"SELECT u.id,u.id_url_tipo,t.descripcion,u.valor,u.descripcion,u.activo "+
 				"FROM fe.url_sunat u "+
 				"INNER JOIN url_tipo t ON (t.id_url_tipo = u.id_url_tipo ) "+
 				"WHERE u.activo = true "+
@@ -66,10 +66,11 @@ public class URLDaoImpl implements URLDao {
 			while(rs.next()) {
 				URLBean url = new URLBean();
 				url.setId(rs.getInt(1));
-				url.setTipo(rs.getString(2));
-				url.setValor(rs.getString(3));
-				url.setLabel(rs.getString(4));
-				url.setActivo(rs.getBoolean(5));
+				url.setIdTipo(rs.getInt(2));
+				url.setTipo(rs.getString(3));
+				url.setValor(rs.getString(4));
+				url.setLabel(rs.getString(5));
+				url.setActivo(rs.getBoolean(6));
 				urls.add(url);
 			}
 			

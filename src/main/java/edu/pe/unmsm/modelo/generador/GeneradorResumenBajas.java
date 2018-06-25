@@ -15,6 +15,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
+import edu.pe.unmsm.modelo.dao.DocumentoDao;
 import edu.pe.unmsm.modelo.dao.EmpresaDao;
 import edu.pe.unmsm.modelo.dao.ResumenDao;
 import edu.pe.unmsm.modelo.dao.TipoDocumento;
@@ -33,11 +36,13 @@ import edu.pe.unmsm.modelo.utils.Lector;
 
 public class GeneradorResumenBajas implements GeneradorResumenes {
 	
-	public GeneradorResumenBajas(List<DocumentoBean> documentos, List<String> razones, EmpresaDao empresaDao,
+	public GeneradorResumenBajas(List<DocumentoBean> documentos, List<String> razones, DocumentoDao documentoDao,
+			EmpresaDao empresaDao,
 			URLDao urlDao, ResumenDao resumenDao, SistemaBean sistema) {
 		super();
 		this.documentos = documentos;
 		this.razones = razones;
+		this.documentoDao = documentoDao;
 		this.empresaDao = empresaDao;
 		this.urlDao = urlDao;
 		this.resumenDao = resumenDao;
@@ -46,13 +51,14 @@ public class GeneradorResumenBajas implements GeneradorResumenes {
 
 	private List<DocumentoBean> documentos;
 	private List<String> razones;
+	private DocumentoDao documentoDao;
 	private EmpresaDao empresaDao;
 	private URLDao urlDao;
 	private ResumenDao resumenDao;
 	private SistemaBean sistema;
 	
 	@Override
-	public ResumenBean generar() throws SQLException, ParserConfigurationException, TransformerException, NullPointerException, IOException, UnsupportedOperationException, SOAPException {
+	public ResumenBean generar() throws SQLException, ParserConfigurationException, TransformerException, NullPointerException, IOException, UnsupportedOperationException, SOAPException, SAXException {
 		GregorianCalendar calendar = new GregorianCalendar();
 		Date date = new Date(calendar.getTimeInMillis());
 		
@@ -61,7 +67,7 @@ public class GeneradorResumenBajas implements GeneradorResumenes {
 			throw new NullPointerException("Los datos de la empresa están vacíos");
 		
 		URLBean url = urlDao.getActivos().stream()
-				.filter(u -> u.getId() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS )
+				.filter(u -> u.getIdTipo() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS && u.getActivo())
 				.findFirst()
 				.get();
 		
@@ -73,7 +79,7 @@ public class GeneradorResumenBajas implements GeneradorResumenes {
 		Mensajero mensajero;
 		
 		File xml = new XMLFactory().getXMLResumen(documentos, empresa, razones, 
-				nombre + ".xml",
+				nombre ,
 				String.valueOf(correlativo), XMLFactory.COD_RESUMEN_BAJAS)
 				.generarDocumento();
 		
@@ -94,6 +100,19 @@ public class GeneradorResumenBajas implements GeneradorResumenes {
 		
 		this.resumenDao.addResumen(res);
 		
+		Logger.getGlobal().log(Level.INFO,"ANULANDO DOCUMENTOS...."+nombre);
+		
+		for(DocumentoBean doc : documentos) 
+			this.documentoDao.anular(doc.getTransaccion());
+		
+		Logger.getGlobal().log(Level.INFO,"FIN RESUMEN BAJAS...."+nombre);
+		
+		mensajero.getResponse().delete();
+		xml.delete();
+		zip.delete();
+		if(mensajero.getNombreRespuesta() != null)
+			new File(mensajero.getNombreRespuesta()).delete();
+		
 		return res;
 	}
 	
@@ -108,6 +127,7 @@ public class GeneradorResumenBajas implements GeneradorResumenes {
 		ret.setFechaReferencia(ref);
 		ret.setArchivo(new SerialBlob(in.getFileAsByteArray()));
 		ret.setNombreArchivo(xml.getName());
+		ret.setCorrelativo(correlativo);
 		if(mensajero.getRespuesta() != null) {
 			ret.setArchivoSunat(new SerialBlob(mensajero.getRespuesta()));
 			ret.setNombreArchivoSunat(mensajero.getNombreRespuesta());
@@ -117,7 +137,7 @@ public class GeneradorResumenBajas implements GeneradorResumenes {
 	}
 
 	private void safeSend(Mensajero mensajero) throws UnsupportedOperationException,SOAPException 
-		,IOException, TransformerException{
+		,IOException, TransformerException, SAXException, ParserConfigurationException{
 		for(int i = 1 ; i < 4 ; i++) {
 			Logger.getGlobal().log(Level.INFO, "ENVIO... intento " + i);
 			try {

@@ -9,11 +9,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
 import edu.pe.unmsm.modelo.dao.beans.DocumentoBean;
 
 public interface GeneradorDocumentos {
 	public List<DocumentoBean> generar(Date fecha) throws SQLException, NullPointerException, 
 			ParserConfigurationException, TransformerException,
 			SOAPException, IOException, 
-			UnsupportedOperationException; 
+			UnsupportedOperationException, SAXException; 
 }

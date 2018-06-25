@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
 import edu.pe.unmsm.modelo.dao.ConstanciaRechazoDao;
 import edu.pe.unmsm.modelo.dao.CorrelacionDao;
 import edu.pe.unmsm.modelo.dao.DetalleDao;
@@ -66,11 +68,11 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 	@Override
 	public List<DocumentoBean> generar(Date fecha) throws SQLException, NullPointerException,
 			ParserConfigurationException, TransformerException,
-			SOAPException, IOException, UnsupportedOperationException {
+			SOAPException, IOException, UnsupportedOperationException, SAXException {
 		List<DocumentoBean> facturas = 
 				documentoDao.listDocumentos(fecha, TipoDocumento.TIPO_BOLETA)
 				.stream()
-				.filter(f -> f.getHomologado().intValue() != 1)
+				.filter(f -> f.getHomologado().intValue() == 0)
 				.collect(Collectors.toList());
 		
 		List<DetalleBean> detalles = this.detalleDao.listDetalle(fecha);
@@ -81,8 +83,9 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 			throw new NullPointerException("Los datos de la empresa están vacíos");
 		
 		
-		URLBean url = urlDao.getActivos().stream()
-				.filter(u -> u.getId() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS )
+		URLBean url = urlDao.listUrl().stream()
+				.filter(u -> u.getIdTipo() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS 
+					&& u.getLabel().equalsIgnoreCase("beta"))
 				.findFirst()
 				.get();
 		
@@ -92,7 +95,7 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 		if(empresa.isNull())
 			throw new NullPointerException("Los datos de la empresa están vacíos");
 	
-		Logger.getGlobal().log(Level.INFO, "INICIANDO GENERACION BOLETA...");
+		Logger.getGlobal().log(Level.INFO, "INICIANDO GENERACION BOLETAS...");
 		
 		for(DocumentoBean factura:facturas) {
 			Logger.getGlobal().log(Level.INFO, "BOLETA - "+factura.getTransaccion()+"...");
@@ -104,11 +107,11 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 			
 			//OBTENGO LA CORRELACION ACTUAL
 			CorrelacionBean correlacion = correlacionDao
-					.getCorrelacion(TipoDocumento.TIPO_FACTURA);
+					.getCorrelacion(TipoDocumento.TIPO_BOLETA);
 			//GENERO EL NOMBRE DEL ARCHIVO
-			String nombre = empresa.getRuc()+"-01-F"+correlacion.getSerie()+
+			String nombre = empresa.getRuc()+"-03-B"+correlacion.getSerie()+
 					"-"+  String.format("%d", correlacion.getCorrelativo() + 1);
-			Logger.getGlobal().log(Level.INFO, "NOMBRE AUX. FACTURA - "+ nombre +"...");
+			Logger.getGlobal().log(Level.INFO, "NOMBRE AUX. BOLETA - "+ nombre +"...");
 			
 			File xml = xmlFactory.getXMLFacturaBoleta(
 					factura, detalleFactura, empresa, nombre,
@@ -143,18 +146,21 @@ public class GeneradorBoletas implements GeneradorDocumentos {
 			Logger.getGlobal().log(Level.INFO, "DOCUMENTO GENERADO - "+ nombre +"... ");
 			
 			//BORRAMOS LOS ARCHIVOS
-			/*
-			mensajero.getResponse().delete();
+			
+			if(mensajero.getResponse() != null)
+				mensajero.getResponse().delete();
 			xml.delete();
 			zip.delete();
-			*/
+			if(mensajero.getNombreRespuesta() != null)
+				new File(mensajero.getNombreRespuesta()).delete();
+			
 		}
 		return facturas;
 	}
 	
 
 	private void safeSend(Mensajero mensajero) throws UnsupportedOperationException,SOAPException 
-		,IOException, TransformerException {
+		,IOException, TransformerException, SAXException, ParserConfigurationException {
 		
 		for(int i = 1 ; i < 4 ; i++) {
 			Logger.getGlobal().log(Level.INFO, "ENVIO... intento " + i);

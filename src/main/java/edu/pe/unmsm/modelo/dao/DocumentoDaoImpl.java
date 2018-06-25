@@ -126,7 +126,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 					documento.setRespuestaSunat(rs.getBlob("archivo_homologado"));
 					documento.setNombreRespuestaSunat(rs.getString("nom_archivo_homologado"));
 					documento.setAnulado(rs.getBoolean("anulado"));
-					documento.setResumenId(rs.getInt("resumen_id"));
+					documento.setResumenId(rs.getString("resumen_id") == null? null : rs.getInt("resumen_id"));
 					documentos.add(documento);
 				}
 				return documentos;
@@ -188,7 +188,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 					documento.setRespuestaSunat(rs.getBlob("archivo_homologado"));
 					documento.setNombreRespuestaSunat(rs.getString("nom_archivo_homologado"));
 					documento.setAnulado(rs.getBoolean("anulado"));
-					documento.setResumenId(rs.getInt("resumen_id"));
+					documento.setResumenId(rs.getString("resumen_id") == null? null : rs.getInt("resumen_id"));
 					documentos.add(documento);
 				}
 				return documentos;
@@ -405,7 +405,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 		
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.cabdocumentos "+
-				"SET resumnen_id = ? "+
+				"SET resumen_id = ? "+
 				"WHERE transaccion = ? ")){
 			
 			
@@ -463,7 +463,20 @@ public class DocumentoDaoImpl implements DocumentoDao {
 			return pst.executeUpdate();
 		}
 	}
-	
+	@Override
+	public int anular(String transaccion) throws SQLException {
+		// TODO Auto-generated method stub
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"UPDATE fe.cabdocumentos "+
+				"SET anulado = ? "+
+				"WHERE transaccion = ? ")){
+			
+			
+			pst.setBoolean(1, true);
+			pst.setString(2, transaccion);			
+			return pst.executeUpdate();
+		}
+	}
 	/* (non-Javadoc)
 	 * @see edu.pe.unmsm.modelo.dao.DocumentoDao#instanceDocumento()
 	 */
@@ -471,4 +484,5 @@ public class DocumentoDaoImpl implements DocumentoDao {
 	public DocumentoBean instanceDocumento() {
 		return new DocumentoBean();
 	}
+	
 }

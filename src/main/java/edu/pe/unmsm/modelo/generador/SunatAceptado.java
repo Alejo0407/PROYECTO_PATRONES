@@ -9,6 +9,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
 import edu.pe.unmsm.modelo.dao.DocumentoDao;
+import edu.pe.unmsm.modelo.dao.TipoDocumento;
 import edu.pe.unmsm.modelo.dao.beans.CorrelacionBean;
 import edu.pe.unmsm.modelo.dao.beans.DocumentoBean;
 import edu.pe.unmsm.modelo.generador.mail.Mensajero;
@@ -35,10 +36,11 @@ class SunatAceptado implements SunatState {
 		// TODO Auto-generated method stub
 		documento.setHomologado(1);
 		documento.setFechaHomologado(new Date(new java.util.Date().getTime()));
-		documento.setSerieElectronica(correlativo.getSerie());
+		documento.setSerieElectronica((documento.getTipo() == TipoDocumento.TIPO_FACTURA?"F":"B")
+				+correlativo.getSerie());
 		documento.setNumeroElectronico(correlativo.getCorrelativo()+1);
 		Lector in = new Lector(archivo);
-	
+		
 		documento.setArchivo(new SerialBlob(in.getFileAsByteArray()));
 		documento.setNombreArchivo(archivo.getName());
 		

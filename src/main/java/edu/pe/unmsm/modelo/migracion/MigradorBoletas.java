@@ -28,18 +28,14 @@ public class MigradorBoletas extends Migrador {
 
 	@Override
 	protected void limpiarDatos(Date fecha, boolean corregido) throws SQLException{
-		int afectadas = this.getDetalleDao().deleteDetalle(fecha, TipoDocumento.TIPO_BOLETA ,corregido);
 		
-		if(afectadas == 0)
-			Logger.getGlobal().log(Level.WARNING, "Ningúna línea fue afectada en el borrado del Detalle");
-		else
-			Logger.getGlobal().log(Level.WARNING, "Lineas borradas del detalle..."+afectadas);
+		int afectadas = this.getDetalleDao().deleteDetalle(fecha, TipoDocumento.TIPO_BOLETA ,corregido);
+		if(afectadas != 0)
+			Logger.getGlobal().log(Level.WARNING, "REGISTROS BORRADAS DEL DETALLE..."+afectadas);
 		
 		afectadas = this.getDocDao().deleteDocumento(fecha, TipoDocumento.TIPO_BOLETA ,corregido);
-		if(afectadas == 0)
-			Logger.getGlobal().log(Level.WARNING, "Ningúna línea fue afectada en el borrado de la Cabecera");
-		else
-			Logger.getGlobal().log(Level.WARNING, "Lineas borradas de las cabeceras..."+afectadas);
+		if(afectadas != 0)
+			Logger.getGlobal().log(Level.WARNING, "REGISTROS BORRADAS  DE LAS CABECERAS..."+afectadas);
 	
 	}
 

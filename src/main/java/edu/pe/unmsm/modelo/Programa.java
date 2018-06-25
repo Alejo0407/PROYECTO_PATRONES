@@ -15,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
 import edu.pe.unmsm.modelo.dao.ConstanciaRechazoDaoImpl;
 import edu.pe.unmsm.modelo.dao.CorrelacionDaoImpl;
 import edu.pe.unmsm.modelo.dao.DetalleDaoImpl;
@@ -120,7 +122,7 @@ public class Programa {
 		EmpresaDao dao = new EmpresaDaoImpl(this.getFe());
 		return dao.getEmpresa();
 	}
-	public synchronized void actualizarEmpresa(EmpresaBean empresa) throws SQLException {
+	public synchronized void updateEmpresa(EmpresaBean empresa) throws SQLException {
 		EmpresaDao dao = new EmpresaDaoImpl(this.getFe());
 		int i = dao.updateEmpresa(empresa);
 		if(i == 0)
@@ -210,7 +212,7 @@ public class Programa {
 	public synchronized List<DocumentoBean> generarFacturas(Date fecha) throws NullPointerException, 
 			UnsupportedOperationException, SQLException, 
 			ParserConfigurationException, TransformerException, 
-			SOAPException, IOException{
+			SOAPException, IOException, SAXException{
 		
 		GeneradorDocumentos generador = new GeneradorFacturas(
 				new DocumentoDaoImpl(this.getFe()),
@@ -226,7 +228,7 @@ public class Programa {
 	public synchronized List<DocumentoBean> generarBoletas(Date fecha) throws NullPointerException, 
 			UnsupportedOperationException, SQLException, 
 			ParserConfigurationException, TransformerException, 
-			SOAPException, IOException{
+			SOAPException, IOException, SAXException{
 			
 		GeneradorDocumentos generador = new GeneradorBoletas(
 				new DocumentoDaoImpl(this.getFe()),
@@ -242,7 +244,7 @@ public class Programa {
 	
 	public synchronized ResumenBean generarResumenDiario(Date fechaReferencia) throws NullPointerException, 
 		UnsupportedOperationException, SQLException, ParserConfigurationException, 
-		TransformerException, IOException, SOAPException {
+		TransformerException, IOException, SOAPException, SAXException {
 		
 		GeneradorResumenes generador = new GeneradorResumenDiario(
 			new DocumentoDaoImpl(this.getFe()),
@@ -259,11 +261,12 @@ public class Programa {
 	public synchronized ResumenBean generarResumenBajas(List<DocumentoBean> docs, List<String> razones) 
 			throws NullPointerException, 
 			UnsupportedOperationException, SQLException, ParserConfigurationException, 
-			TransformerException, IOException, SOAPException {
+			TransformerException, IOException, SOAPException, SAXException {
 	
 		GeneradorResumenes generador = new GeneradorResumenBajas(
 			docs,
 			razones,
+			new DocumentoDaoImpl(this.getFe()),
 			new EmpresaDaoImpl(this.getFe()),
 			new URLDaoImpl(this.getFe()),
 			new ResumenDaoImpl(this.getFe()),

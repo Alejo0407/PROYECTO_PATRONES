@@ -29,16 +29,18 @@ public class CorrelacionDaoImpl implements CorrelacionDao {
 				"WHERE tipo_doc = ?",
 				ResultSet.TYPE_SCROLL_SENSITIVE,
 				ResultSet.CONCUR_READ_ONLY);
-			ResultSet rs = pst.executeQuery()){
-			
-			CorrelacionBean cor = null;
-			if(rs.next()) {
-				cor = new CorrelacionBean();
-				cor.setTipoDocumento(rs.getInt(1));
-				cor.setSerie(rs.getString(2));
-				cor.setCorrelativo(rs.getInt(3));
+			){
+			pst.setInt(1, tipo);
+			try(ResultSet rs = pst.executeQuery()){
+				CorrelacionBean cor = null;
+				if(rs.next()) {
+					cor = new CorrelacionBean();
+					cor.setTipoDocumento(rs.getInt(1));
+					cor.setSerie(rs.getString(2));
+					cor.setCorrelativo(rs.getInt(3));
+				}
+				return cor;
 			}
-			return cor;
 		}
 	}
 	

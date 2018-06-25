@@ -65,7 +65,12 @@ public class MensajeroStatus extends Mensajero {
 		Transformer transformer = transformerFactory.newTransformer();
 		Source sourceContent = response.getSOAPPart().getContent();
 		
-		File resp = new File("response-"+this.getArchivo().getName());
+		String nombreArchivo = this.getArchivo().getName();
+		if(nombreArchivo.contains(".")) {
+			nombreArchivo = nombreArchivo.substring(0,nombreArchivo.indexOf("."));
+		}
+		
+		File resp = new File("response-"+nombreArchivo + ".xml");
 		StreamResult rs = new StreamResult(new FileOutputStream(resp));
 		transformer.transform(sourceContent, rs);
 		return resp;

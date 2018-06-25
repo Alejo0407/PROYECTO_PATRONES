@@ -16,6 +16,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
 import edu.pe.unmsm.modelo.dao.DocumentoDao;
 import edu.pe.unmsm.modelo.dao.EmpresaDao;
 import edu.pe.unmsm.modelo.dao.ResumenDao;
@@ -57,7 +59,7 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 	
 	
 	@Override
-	public ResumenBean generar() throws SQLException, ParserConfigurationException, TransformerException, NullPointerException, IOException, UnsupportedOperationException, SOAPException {
+	public ResumenBean generar() throws SQLException, ParserConfigurationException, TransformerException, NullPointerException, IOException, UnsupportedOperationException, SOAPException, SAXException {
 		
 		GregorianCalendar calendar = new GregorianCalendar();
 		Date date = new Date(calendar.getTimeInMillis());
@@ -72,7 +74,7 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 			throw new NullPointerException("Los datos de la empresa están vacíos");
 		
 		URLBean url = urlDao.getActivos().stream()
-				.filter(u -> u.getId() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS )
+				.filter(u -> u.getIdTipo() ==TipoURL.ENVIO_DOCUMENTOS_ELECTRONICOS && u.getActivo())
 				.findFirst()
 				.get();
 		
@@ -84,7 +86,7 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 		Mensajero mensajero;
 		
 		File xml = new XMLFactory().getXMLResumen(documentos, empresa, null, 
-				nombre + ".xml",
+				nombre ,
 				String.valueOf(correlativo), XMLFactory.COD_RESUMEN_DIARIO)
 				.generarDocumento();
 		
@@ -110,9 +112,18 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 			.mapToInt(p -> p.getId())
 			.max()
 			.getAsInt();
-
+		
+		Logger.getGlobal().log(Level.INFO,"GENERANDO REFERENCIAS EN BOLETAS...."+nombre);
 		for(DocumentoBean documento:documentos)
 			this.documentoDao.updateDocumento(id, documento.getTransaccion());
+		
+		Logger.getGlobal().log(Level.INFO,"FIN RESUMEN DIARIO...."+nombre);
+		
+		mensajero.getResponse().delete();
+		xml.delete();
+		zip.delete();
+		if(mensajero.getNombreRespuesta() != null)
+			new File(mensajero.getNombreRespuesta()).delete();
 		
 		return res;
 	}
@@ -128,6 +139,7 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 		ret.setFechaReferencia(fecha);
 		ret.setArchivo(new SerialBlob(in.getFileAsByteArray()));
 		ret.setNombreArchivo(xml.getName());
+		ret.setCorrelativo(correlativo);
 		if(mensajero.getRespuesta() != null) {
 			ret.setArchivoSunat(new SerialBlob(mensajero.getRespuesta()));
 			ret.setNombreArchivoSunat(mensajero.getNombreRespuesta());
@@ -137,7 +149,7 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 	}
 
 	private void safeSend(Mensajero mensajero) throws UnsupportedOperationException,SOAPException 
-		,IOException, TransformerException{
+		,IOException, TransformerException, SAXException, ParserConfigurationException{
 		for(int i = 1 ; i < 4 ; i++) {
 			Logger.getGlobal().log(Level.INFO, "ENVIO... intento " + i);
 			try {

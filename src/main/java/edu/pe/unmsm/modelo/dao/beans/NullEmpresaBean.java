@@ -125,6 +125,13 @@ public class NullEmpresaBean extends EmpresaBean{
 		else
 			return super.getPassword();
 	}
+	@Override
+	public String getCelular() {
+		if(super.getCelular() == null)
+			return "1234";	
+		else
+			return super.getCelular();
+	}
 
 	@Override
 	public boolean isNull(){

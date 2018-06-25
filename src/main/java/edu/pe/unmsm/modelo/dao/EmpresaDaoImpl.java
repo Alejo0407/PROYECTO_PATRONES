@@ -40,15 +40,16 @@ public class EmpresaDaoImpl implements EmpresaDao {
 				empresa.setDepartamento(rs.getString(8));
 				empresa.setDistrito(rs.getString(9));
 				empresa.setTelefono(rs.getString(10));
-				empresa.setEmail(rs.getString(11));
-				empresa.setWeb(rs.getString(12));
-				empresa.setCertificado(rs.getBlob(13));
-				empresa.setNombreCertificado(rs.getString(14));
-				empresa.setPin(rs.getString(15));
-				empresa.setPinRevocar(rs.getString(16));
-				empresa.setAlias(rs.getString(17));
-				empresa.setUsuarioSecuandario(rs.getString(18));
-				empresa.setPassword(rs.getString(19));
+				empresa.setCelular(rs.getString(11));
+				empresa.setEmail(rs.getString(12));
+				empresa.setWeb(rs.getString(13));
+				empresa.setCertificado(rs.getBlob(14));
+				empresa.setNombreCertificado(rs.getString(15));
+				empresa.setPin(rs.getString(16));
+				empresa.setPinRevocar(rs.getString(17));
+				empresa.setAlias(rs.getString(18));
+				empresa.setUsuarioSecuandario(rs.getString(19));
+				empresa.setPassword(rs.getString(20));
 			}
 			else
 				empresa = new NullEmpresaBean();
@@ -66,14 +67,14 @@ public class EmpresaDaoImpl implements EmpresaDao {
 		String sqlInsert = "INSERT INTO fe.empresa "+
 				"(nombre,direccion,nombre_comercial,ubigeo,urbanizacion,"+
 				"provincia,departamento,distrito,telefono,mail_empresa,web,certificado,"+
-				"nombre_certificado,pin,pin_revocar,alias,usr_secundario,pass,ruc) "+
+				"nombre_certificado,pin,pin_revocar,alias,usr_secundario,pass,celular,ruc) "+
 				"VALUES "+
-				"(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+				"(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 		String sqlUpdate = "UPDATE fe.empresa "+
 				"SET nombre = ?, direccion = ?, nombre_comercial = ?, ubigeo = ?, urbanizacion = ?,"+
 				"provincia = ?, departamento = ?, distrito = ?, telefono = ?, mail_empresa = ?,web = ?,"+
 				"certificado = ?, nombre_certificado = ?, pin = ?, pin_revocar = ?, alias = ?, "+
-				"usr_secundario = ?, pass ? "+
+				"usr_secundario = ?, pass = ? ,celular = ?"+
 				"WHERE ruc = ? ";
 		try(PreparedStatement pst = conexion.prepareStatement(
 				empresa.isNull()?sqlInsert:sqlUpdate)){
@@ -96,7 +97,8 @@ public class EmpresaDaoImpl implements EmpresaDao {
 			pst.setString(16, empresa.getAlias());
 			pst.setString(17, empresa.getUsuarioSecuandario());
 			pst.setString(18, empresa.getPassword());
-			pst.setString(19, empresa.getRuc());
+			pst.setString(19, empresa.getCelular());
+			pst.setString(20, empresa.getRuc());
 			
 			return pst.executeUpdate();
 		}

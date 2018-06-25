@@ -2,6 +2,7 @@ package edu.pe.unmsm.modelo.generador;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.sql.SQLException;
 
@@ -39,11 +40,9 @@ class SunatExcepcion implements SunatState {
 		documento.setArchivo(new SerialBlob(in.getFileAsByteArray()));
 		documento.setNombreArchivo(archivo.getName());
 		
-		if(mensajero.getRespuesta() != null) {
-			documento.setRespuestaSunat(new SerialBlob(mensajero.getRespuesta()));
-			documento.setNombreRespuestaSunat(mensajero.getNombreRespuesta());
-			documento.setMensajeSunat(mensajero.getMensaje());
-		}
+		documento.setRespuestaSunat(new SerialBlob(Files.readAllBytes(mensajero.getResponse().toPath())));
+		documento.setNombreRespuestaSunat(mensajero.getResponse().getName());
+		documento.setMensajeSunat(mensajero.getMensaje());
 		documentoDao.updatePartDocumento(documento);
 
 	}
