@@ -150,4 +150,13 @@ public class EmpresaBean implements Serializable{
 	public boolean isNull(){
 		return false;
 	}
+	@Override
+	public String toString() {
+		return "EmpresaBean [ruc=" + ruc + ", nombre=" + nombre + ", direccion=" + direccion + ", nombreComercial="
+				+ nombreComercial + ", ubigeo=" + ubigeo + ", urbanizacion=" + urbanizacion + ", distrito=" + distrito
+				+ ", provincia=" + provincia + ", departamento=" + departamento + ", telefono=" + telefono + ", email="
+				+ email + ", web=" + web + ", certificado=" + certificado + ", nombreCertificado=" + nombreCertificado
+				+ ", pin=" + pin + ", pinRevocar=" + pinRevocar + ", alias=" + alias + ", usuarioSecundario="
+				+ usuarioSecundario + ", password=" + password + "]";
+	}
 }

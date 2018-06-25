@@ -206,7 +206,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 				"(transaccion,periodo,tipodocumento,serie,numero,fechaemision,"+
 				"fechavencimiento,tipocliente,numcliente,nomcliente,direccion,departamento,"+
 				"provincia,distrito,email,valventaafe,valventaina,valventaexo,isc,codisc,"+
-				"igv,codigv,otros,totaldoc,serieelec,numeroelec,homologado,fechahomologado,"+
+				"igv,codigv,otros,totaldoc,serieelec,numeroelec,homologado,fechomologado,"+
 				"archivo,nom_archivo,mensaje_homologado,archivo_homologado,nom_archivo_homologado,"+
 				"anulado,resumen_id) "+
 				"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ")){
@@ -278,7 +278,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 				"fechavencimiento = ?,tipocliente = ?,numcliente = ?,nomcliente = ?,direccion = ?,departamento = ?,"+
 				"provincia = ?,distrito = ?,email = ?,valventaafe = ?,valventaina = ?,valventaexo = ?,"+
 				"isc = ?,codisc = ?,igv = ?,codigv = ?,otros = ?,totaldoc = ?,serieelec = ?,numeroelec = ?,"+
-				"homologado = ?,fechahomologado = ?,archivo = ?,nom_archivo = ?,mensaje_homologado = ?,"+
+				"homologado = ?,fechomologado = ?,archivo = ?,nom_archivo = ?,mensaje_homologado = ?,"+
 				"archivo_homologado = ?,nom_archivo_homologado = ?, anulado = ?,resumen_id = ? "+
 				"WHERE transaccion = ? ")){
 			
@@ -347,7 +347,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.cabdocumentos "+
 				"SET serieelec = ?,numeroelec = ?,"+
-				"homologado = ?,fechahomologado = ?,archivo = ?,nom_archivo = ?,mensaje_homologado = ?,"+
+				"homologado = ?,fechomologado = ?,archivo = ?,nom_archivo = ?,mensaje_homologado = ?,"+
 				"archivo_homologado = ?,nom_archivo_homologado = ?, anulado = ?,resumen_id = ? "+
 				"WHERE transaccion = ? ")){
 			
@@ -384,7 +384,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"UPDATE fe.cabdocumentos "+
 				"SET serieelec = ?,numeroelec = ?,"+
-				"homologado = ? "+
+				"homologado = ?, fechomologado = ? "+
 				"WHERE transaccion = ? ")){
 			
 			
@@ -392,6 +392,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 			pst.setInt(2, numeroElectronico);
 			
 			pst.setInt(3, homologado );
+			pst.setDate(4, new Date(new java.util.Date().getTime()));
 			pst.setString(5, transaccion);
 			
 			return pst.executeUpdate();

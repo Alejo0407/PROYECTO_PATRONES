@@ -110,6 +110,14 @@ public class DetalleBean implements Serializable{
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+	@Override
+	public String toString() {
+		return "DetalleBean [transaccion=" + transaccion + ", numeroItem=" + numeroItem + ", codigo=" + codigo
+				+ ", descripcion=" + descripcion + ", codigoUnidad=" + codigoUnidad + ", valorUnitario=" + valorUnitario
+				+ ", cantidad=" + cantidad + ", igv=" + igv + ", codigoIgv=" + codigoIgv + ", isc=" + isc
+				+ ", codigoIsc=" + codigoIsc + ", otrosTributos=" + otrosTributos + ", total=" + total + ", fecha="
+				+ fecha + "]";
+	}
 	
 	
 

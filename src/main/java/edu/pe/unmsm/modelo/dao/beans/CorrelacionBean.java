@@ -57,4 +57,9 @@ public class CorrelacionBean implements Serializable{
 		}else
 			setCorrelativo(correlativo.intValue()+1);		
 	}
+	@Override
+	public String toString() {
+		return "CorrelacionBean [tipoDocumento=" + tipoDocumento + ", serie=" + serie + ", correlativo=" + correlativo
+				+ "]";
+	}
 }

@@ -55,4 +55,9 @@ public class UsuarioBean implements Serializable{
 	public Integer getRango(){
 		return this.rango;
 	}
+	@Override
+	public String toString() {
+		return "UsuarioBean [id=" + id + ", pass=" + pass + ", nombres=" + nombres + ", apellidos=" + apellidos
+				+ ", correo=" + correo + ", rango=" + rango + "]";
+	}
 }

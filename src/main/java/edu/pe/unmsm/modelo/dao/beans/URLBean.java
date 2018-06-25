@@ -55,4 +55,9 @@ public class URLBean implements Serializable{
 	public void setIdTipo(Integer idTipo) {
 		this.idTipo = idTipo;
 	}
+	@Override
+	public String toString() {
+		return "URLBean [id=" + id + ", idTipo=" + idTipo + ", tipo=" + tipo + ", valor=" + valor + ", label=" + label
+				+ ", activo=" + activo + "]";
+	}
 }

@@ -84,4 +84,11 @@ public class ResumenBean implements Serializable{
 	public String getNombreArchivoSunat() {
 		return nombreArchivoSunat;
 	}
+	@Override
+	public String toString() {
+		return "ResumenBean [id=" + id + ", fechaGeneracion=" + fechaGeneracion + ", correlativo=" + correlativo
+				+ ", tipo=" + tipo + ", fechaReferencia=" + fechaReferencia + ", archivo=" + archivo
+				+ ", nombreArchivo=" + nombreArchivo + ", ticket=" + ticket + ", archivoSunat=" + archivoSunat
+				+ ", nombreArchivoSunat=" + nombreArchivoSunat + "]";
+	}
 }

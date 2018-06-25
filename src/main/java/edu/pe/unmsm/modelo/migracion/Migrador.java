@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import edu.pe.unmsm.modelo.dao.DetalleDao;
 import edu.pe.unmsm.modelo.dao.DocumentoDao;
+import edu.pe.unmsm.modelo.dao.TipoDocumento;
 import edu.pe.unmsm.modelo.dao.beans.DetalleBean;
 import edu.pe.unmsm.modelo.dao.beans.DocumentoBean;
 
@@ -38,7 +39,8 @@ public abstract class Migrador {
 					.filter(p -> p.getTransaccion().equals(doc.getTransaccion()))
 					.collect(Collectors.toList());
 			
-			Logger.getGlobal().log(Level.INFO, "MIGRANDO "+doc.getTipo()+
+			Logger.getGlobal().log(Level.INFO, "MIGRANDO "+
+					(doc.getTipo()==TipoDocumento.TIPO_FACTURA?"FACTURA ":"BOLETA ")+
 					"..."  + doc.getSerieOriginal()+"-"+doc.getNumeroOriginal());
 			for(DetalleBean d:det) 
 				detalleDao.addDetalle(d);

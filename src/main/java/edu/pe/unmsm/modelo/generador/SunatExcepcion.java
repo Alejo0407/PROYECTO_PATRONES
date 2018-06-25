@@ -2,6 +2,7 @@ package edu.pe.unmsm.modelo.generador;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -29,6 +30,8 @@ class SunatExcepcion implements SunatState {
 	@Override
 	public void registrar() throws  SQLException, IOException {
 		documento.setHomologado(-1);
+
+		documento.setFechaHomologado(new Date(new java.util.Date().getTime()));
 		documento.setSerieElectronica(null);
 		documento.setNumeroElectronico(null);
 		Lector in = new Lector(archivo);

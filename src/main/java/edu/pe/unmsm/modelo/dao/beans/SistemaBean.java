@@ -37,4 +37,10 @@ public class SistemaBean implements Serializable{
 	public void setBetaCode(String betaCode) {
 		this.betaCode = betaCode;
 	}
+
+	@Override
+	public String toString() {
+		return "SistemaBean [reporteador=" + reporteador + ", verificarBoletas=" + verificarBoletas + ", betaCode="
+				+ betaCode + "]";
+	}
 }

@@ -29,10 +29,12 @@ public class SistemaDaoImpl implements SistemaDao{
 			ResultSet rs = st.executeQuery(
 				"SELECT * FROM fe.sistema")
 			){
-
-			sistema = new SistemaBean();
-			sistema.setReporteador(rs.getString(1));
-			sistema.setVerificarBoletas(rs.getBoolean(2));
+			
+			if(rs.next()) {
+				sistema = new SistemaBean();
+				sistema.setReporteador(rs.getString(1));
+				sistema.setVerificarBoletas(rs.getBoolean(2));
+			}
 		}
 
 		return sistema;

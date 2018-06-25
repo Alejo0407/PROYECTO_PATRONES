@@ -260,4 +260,20 @@ public class DocumentoBean implements Serializable{
 	public void setDistrito(String distrito) {
 		this.distrito = distrito;
 	}
+	@Override
+	public String toString() {
+		return "DocumentoBean [transaccion=" + transaccion + ", periodo=" + periodo + ", tipo=" + tipo
+				+ ", serieOriginal=" + serieOriginal + ", numeroOriginal=" + numeroOriginal + ", fechaEmision="
+				+ fechaEmision + ", fechaVencimiento=" + fechaVencimiento + ", tipoCliente=" + tipoCliente
+				+ ", numeroCliente=" + numeroCliente + ", nombreCliente=" + nombreCliente + ", direccion=" + direccion
+				+ ", provincia=" + provincia + ", departamento=" + departamento + ", distrito=" + distrito + ", email="
+				+ email + ", valorVentaAfecta=" + valorVentaAfecta + ", valorVentaInafecta=" + valorVentaInafecta
+				+ ", valorVentaExonerada=" + valorVentaExonerada + ", igv=" + igv + ", codigoIgv=" + codigoIgv
+				+ ", isc=" + isc + ", codigoIsc=" + codigoIsc + ", otrosTributos=" + otrosTributos + ", total=" + total
+				+ ", serieElectronica=" + serieElectronica + ", numeroElectronico=" + numeroElectronico
+				+ ", homologado=" + homologado + ", fechaHomologado=" + fechaHomologado + ", archivo=" + archivo
+				+ ", nombreArchivo=" + nombreArchivo + ", respuestaSunat=" + respuestaSunat + ", nombreRespuestaSunat="
+				+ nombreRespuestaSunat + ", mensajeSunat=" + mensajeSunat + ", anulado=" + anulado + ", resumenId="
+				+ resumenId + "]";
+	}
 }

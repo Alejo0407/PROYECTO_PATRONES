@@ -64,6 +64,12 @@ public class Programa {
 		
 		init();
 	}
+	/**
+	 * 
+	 * @param origen -> Fuente de origen de daots
+	 * @param fe -> BD del sistema
+	 * @throws SQLException
+	 */
 	public Programa(Connection origen, Connection fe) throws SQLException {
 		this.setOrigen(origen);
 		this.setFe(fe);
@@ -99,6 +105,14 @@ public class Programa {
 	public List<UsuarioBean> listarUsuarios() throws SQLException{
 		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
 		return dao.listUsuarios();
+	}
+	public void updateUsuario(UsuarioBean usuario) throws SQLException {
+		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
+		int i = dao.updateUsuario(usuario);
+		if( i == 0)
+			Logger.getGlobal().log(Level.WARNING, "NO SE HAN AFECTADO DATOS EN LA BD");
+		else
+			Logger.getGlobal().log(Level.INFO, "USUARIO "+ usuario.getId() + " MODIFICADO");
 	}
 	
 	//PARA LA INFO DE LA EMPRESA
@@ -176,7 +190,7 @@ public class Programa {
 					new DocumentoDaoImpl(this.getFe()),
 					new DetalleDaoImpl(this.getFe()), 
 					getOrigen(), 
-					MigradorFactory.MIG_FACTURA
+					MigradorFactory.MIG_BOLETA
 				);
 			Logger.getGlobal().log(Level.INFO, "INICIANDO MIGRACION DE BOLETAS....");
 			List<DocumentoBean> docs =  migrador.migrar(new java.sql.Date(fecha.getTime()), corregido);
@@ -260,7 +274,6 @@ public class Programa {
 	}
 	
 	//PARA LAS TABLAS
-	
 	public List<DocumentoBean> listBoletas(Date fecha) throws SQLException{
 		DocumentoDao dao = new DocumentoDaoImpl(this.getFe());
 		return dao.listDocumentos(new java.sql.Date(fecha.getTime()), TipoDocumento.TIPO_BOLETA);
@@ -269,6 +282,10 @@ public class Programa {
 	public List<DocumentoBean> listFacturas(Date fecha) throws SQLException{
 		DocumentoDao dao = new DocumentoDaoImpl(this.getFe());
 		return dao.listDocumentos(new java.sql.Date(fecha.getTime()), TipoDocumento.TIPO_FACTURA);
+	}
+	public List<UsuarioBean> listUsuarios() throws SQLException{
+		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
+		return dao.listUsuarios();
 	}
 
 	public void closeResources() {

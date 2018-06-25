@@ -48,4 +48,9 @@ public class ConstanciaRechazoBean implements Serializable{
 	public Blob getCdr(){
 		return this.cdr;
 	}
+	@Override
+	public String toString() {
+		return "ConstanciaRechazoBean [serieElectronica=" + serieElectronica + ", numeroElectronico="
+				+ numeroElectronico + ", serie=" + serie + ", numero=" + numero + ", cdr=" + cdr + "]";
+	}
 }

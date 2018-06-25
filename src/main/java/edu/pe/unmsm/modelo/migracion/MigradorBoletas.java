@@ -32,11 +32,15 @@ public class MigradorBoletas extends Migrador {
 		
 		if(afectadas == 0)
 			Logger.getGlobal().log(Level.WARNING, "Ningúna línea fue afectada en el borrado del Detalle");
+		else
+			Logger.getGlobal().log(Level.WARNING, "Lineas borradas del detalle..."+afectadas);
 		
 		afectadas = this.getDocDao().deleteDocumento(fecha, TipoDocumento.TIPO_BOLETA ,corregido);
 		if(afectadas == 0)
 			Logger.getGlobal().log(Level.WARNING, "Ningúna línea fue afectada en el borrado de la Cabecera");
-		
+		else
+			Logger.getGlobal().log(Level.WARNING, "Lineas borradas de las cabeceras..."+afectadas);
+	
 	}
 
 	@Override
@@ -75,33 +79,33 @@ public class MigradorBoletas extends Migrador {
 					"ON m_sali.PERS_P_inCODPER=m_pers.Pers_P_incodper " + 
 					"INNER JOIN m_tipo_docu_impr " + 
 					"ON m_sali.TDOI_P_inCODTIP=m_tipo_docu_impr.TDOI_P_inCODTIP " + 
-					"WHERE m_sali.sali_chfecsal=\""+getDateAsString(fecha)+"\" \"" +valor +"\"  " + 
+					"WHERE m_sali.sali_chfecsal=\""+getDateAsString(fecha)+"\" " +valor +"  " + 
 					"AND m_tipo_docu_impr.TDOI_chNOMTIP <> 'FACTURA' AND m_sali.SALI_inSITSAL <> 4  " + 
-					"ORDER BY m_sali.TDOI_P_inCODTIP,m_sali.SALI_chNRODOC\"");
+					"ORDER BY m_sali.TDOI_P_inCODTIP,m_sali.SALI_chNRODOC");
 				
 			){
 			
 			List<DocumentoBean> documentos = new ArrayList<>();
 			while(tabla.next()) {
-				DocumentoBean factura = this.getDocDao().instanceDocumento();
-				factura.setTransaccion(tabla.getString("transaccion"));
-				factura.setPeriodo(tabla.getString("periodo"));
-				factura.setTipo(Integer.parseInt(tabla.getString("TIPODOCUMENTO")));
-				factura.setSerieOriginal(tabla.getString("serie"));
-				factura.setNumeroOriginal(Integer.parseInt(tabla.getString("numero")));
-				factura.setFechaEmision(fecha);
-				factura.setTipoCliente(tabla.getString("tipocliente"));
-				factura.setNumeroCliente(tabla.getString("numcliente"));
-				factura.setNombreCliente( tabla.getString("nomcliente"));;
-				factura.setDireccion(tabla.getString("direccion"));;
-				factura.setEmail(tabla.getString("email"));
-				factura.setValorVentaExonerada( tabla.getDouble("valventaexo"));
-				factura.setCodigoIgv("20");
-				factura.setIgv(0.00);
-				factura.setTotal( tabla.getDouble("totaldoc"));
-				factura.setHomologado(0);
+				DocumentoBean boleta = this.getDocDao().instanceDocumento();
+				boleta.setTransaccion(tabla.getString("transaccion"));
+				boleta.setPeriodo(tabla.getString("periodo"));
+				boleta.setTipo(Integer.parseInt(tabla.getString("TIPODOCUMENTO")));
+				boleta.setSerieOriginal(tabla.getString("serie"));
+				boleta.setNumeroOriginal(Integer.parseInt(tabla.getString("numero")));
+				boleta.setFechaEmision(fecha);
+				boleta.setTipoCliente(tabla.getString("tipocliente"));
+				boleta.setNumeroCliente(tabla.getString("numcliente"));
+				boleta.setNombreCliente( tabla.getString("nomcliente"));;
+				boleta.setDireccion(tabla.getString("direccion"));;
+				boleta.setEmail(tabla.getString("email"));
+				boleta.setValorVentaExonerada( tabla.getDouble("valventaexo"));
+				boleta.setCodigoIgv("20");
+				boleta.setIgv(0.00);
+				boleta.setTotal( tabla.getDouble("totaldoc"));
+				boleta.setHomologado(0);
 				
-				documentos.add(factura);
+				documentos.add(boleta);
 			}
 			
 			return documentos;
@@ -158,7 +162,7 @@ public class MigradorBoletas extends Migrador {
 				det.setIgv(0.00);
 				det.setCodigoIgv("20");
 				det.setTotal(detalle.getDouble("valtotal"));
-				
+				det.setFecha(fecha);
 				detalles.add(det);
 			}
 			
@@ -170,11 +174,10 @@ public class MigradorBoletas extends Migrador {
 	private String getDateAsString(Date fecha) {
 		GregorianCalendar date = new GregorianCalendar();
 		date.setTime(fecha);
-			
-		String anio = String.format("%04d", date.get(GregorianCalendar.YEAR)),
-				mes = String.format("%02d", date.get(GregorianCalendar.MONTH)+1),
-				dia = String.format("%02d", date.get(GregorianCalendar.DATE));
-		return anio+mes+dia;
+		
+		return String.format("%04d%02d%02d",date.get(GregorianCalendar.YEAR),
+				date.get(GregorianCalendar.MONTH)+1,
+				date.get(GregorianCalendar.DATE));
 	}
 
 }
