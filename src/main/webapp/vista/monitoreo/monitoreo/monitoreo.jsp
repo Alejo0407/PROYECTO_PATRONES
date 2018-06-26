@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class='col-sm-1'>
-        	<button onclick="msGenerarTabla()">generar</button>
+        	<button onclick="msGenerarTabla()" class="btn btn-dark">generar</button>
 		</div>
         <script type="text/javascript">
             $(function () {

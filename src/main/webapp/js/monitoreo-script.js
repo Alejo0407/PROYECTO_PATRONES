@@ -5,12 +5,20 @@ function msGenerarTabla(){
 			action : 'getDatosTabla',
 			fecha : f.value
 	};
+	$('body').append('<div id="bloqueo"><div id="loader"></div></div>');
 	$.post('MonitorController', formData , function(response){
 		
 	}).done((response) => {
-		$('#monitoreo-tabla').append(response);
-		
+		$('#bloqueo').remove();
+		if(response.error){
+			alert(response.error);
+		}
+		else{
+			$('#monitoreo-tabla').empty();
+			$('#monitoreo-tabla').append(response);
+		}
 	}).fail(() => {
+		$('#bloqueo').remove();
 		alert('Error en la llamada al servidor');
 	});
 }
