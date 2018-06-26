@@ -1,161 +1,151 @@
 package edu.pe.unmsm.controlador;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+import java.util.Base64;
+
+import javax.naming.NamingException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import java.io.PrintWriter;
-import java.io.IOException;
-import edu.pe.unmsm.controlador.beans.MenuBean;
+
+import edu.pe.unmsm.controlador.beans.MenuBO;
+import edu.pe.unmsm.modelo.Programa;
+import edu.pe.unmsm.modelo.dao.beans.UsuarioBean;
 
 
 @WebServlet(name = "IndexController", urlPatterns= {"/IndexController"})
 public class IndexServlet extends HttpServlet{
-
+	
+	private Programa p;
+	private UsuarioBean usr;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8147367836198537361L;
-
+	
+	public void doGet(HttpServletRequest request, 
+			HttpServletResponse response) throws ServletException,IOException{
+		
+		request.getRequestDispatcher("index.jsp").forward(request, response);
+	}
+	
 	public void doPost(HttpServletRequest request, 
 		HttpServletResponse response) throws ServletException,IOException{
 
 		//Siempre va para los caracteres especiales
 		response.setCharacterEncoding("UTF-8");
-
-		//logica del controlador
-		String user = (String)request.getParameter("user");
-		String pass = (String)request.getParameter("pass");
-
-		boolean loggin = !(user.trim().isEmpty() || pass.trim().isEmpty());
-
-		//prueba, va el loggin el usuario del modelo
-		loggin = loggin && user.equals("admin")&&pass.equals("admin");
-
-		if(loggin){
-
-			MenuBean menuProcesos 	= this.generarMenuProcesos();
-			MenuBean menuMonitoreo 	= this.generarMenuMonitoreo();
-			MenuBean menuReportes 	= this.generarMenuReportes();
-			MenuBean menuUsuarios  	= this.generarMenuUsuarios();
-
-			request.setAttribute("menuProcesos",menuProcesos);
-			request.setAttribute("menuMonitoreo",menuMonitoreo);
-			request.setAttribute("menuReportes",menuReportes);
-			request.setAttribute("menuUsuarios",menuUsuarios);
-
-			response.setContentType("text/html");
-			request.getRequestDispatcher("vista/contenidoPrincipal.jsp")
-				.forward(request,response);
+		
+		String action = (String)request.getParameter("action");
+		
+		if(action == null)
+			action = "loggin";
+		
+		
+		switch(action) {
+		case "load":
+			this.actionLoad(request, response);
+			break;
+		case "loggin":
+			this.actionLoggin(request, response);
+			break;
+		case "loggout":
+			actionLoggout(request,response);
+			break;
 		}
-		else{
-			try(PrintWriter out = response.getWriter()){
-				response.setContentType("application/json");
-				out.write(
-					"{\"error\":\"Usuario con contraseña inválida\"}"
-				);
+	
+	}
+	private void actionLoggout(HttpServletRequest request, 
+			HttpServletResponse response) {
+		request.getSession().invalidate();
+	}
+	
+	private void actionLoad(HttpServletRequest request, 
+			HttpServletResponse response) throws IOException, ServletException {
+		
+		response.setContentType("text/html");
+		/*try(PrintWriter out = response.getWriter()){
+			out.println("<h1>llamo al action load</h1>");
+		}*/
+		
+		
+		if(request.getSession().getAttribute("usr") != null) 
+			request.getRequestDispatcher("vista/content.jsp").forward(request, response);
+		else
+			request.getRequestDispatcher("vista/loggin.jsp").forward(request, response);
+		
+	}
+	
+	private void actionLoggin(HttpServletRequest request, 
+			HttpServletResponse response) throws ServletException, IOException {
+		
+			try {
+				if( this.validateLoggin(request, response) ) {
+					
+					response.setContentType("text/html");
+					MenuBO menu = new MenuBO( this.usr.getRango() );
+					request.getSession().setAttribute("menu", menu);
+					request.setAttribute("m", menu.loadMenu());
+					
+					request.getRequestDispatcher("vista/content.jsp").forward(request, response);
+				}
+				else {
+					try(PrintWriter out = response.getWriter()){
+						response.setContentType("application/json");
+						out.write(
+							"{\"error\":\"Usuario con contraseña inválida\"}"
+						);
+					}
+				}
+			} catch (SQLException | NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				try(PrintWriter out = response.getWriter()){
+					response.setContentType("application/json");
+					out.write(
+						"{\"error\":\""+e.getMessage()+"\"}"
+					);
+				}
+			}
+	}
+	
+	
+	private boolean validateLoggin(HttpServletRequest request, 
+			HttpServletResponse response) throws SQLException, NamingException, UnsupportedEncodingException {
+		
+		if(request.getSession().getAttribute("usr") == null) {
+			//LOGGIN
+			String user = (String)request.getParameter("username");
+			String pass = (String)request.getParameter("password");
+			
+			
+			if(user == null || pass == null)
+				return false;
+			else if (user.isEmpty() || pass.isEmpty())
+				return false;
+			else {
+				p = new Programa();
+				this.usr = p.getUsuario(user);
+				
+				p.closeResources();
+				
+				if(usr == null)
+					return false;
+				else {
+					String decoded = new String(Base64.getDecoder().decode(this.usr.getPass()),"UTF-8");
+					boolean b = (pass.equals(decoded));
+					if(b) request.getSession().setAttribute("usr", this.usr);
+					return b;
+				}
 			}
 		}
-
-
-	}
-	
-	private MenuBean generarMenuProcesos(){
-
-		//Menu de procesos
-		MenuBean menuProcesos = new MenuBean("Procesos");
-		String[][] opciones1 = {
-			{"Generador en lotes"},
-			{"invocarContenido(\"procesos/lotes/generador.jsp\")"}
-		};
+		return false;
 		
-		String[][] opciones2 = {
-			{"Resumen Diario"
-			,"Estado de Resumen Diario"
-			,"Estado de Resumen de Bajas"},
-			
-			{"invocarContenido(\"procesos/resumen/resumenDiario.jsp\")",
-			"invocarContenido(\"procesos/resumen/estadoResumenDiario.jsp\")",
-			"invocarContenido(\"procesos/resumen/estadoResumenBajas.jsp\")"}
-		};
-
-		String[][] opciones3 = {
-			{"Anular Documento",
-			"Anular Documento (Error del sistema)"},
-
-			{"invocarContenido(\"procesos/bajas/anular.jsp\")",
-			"invocarContenido(\"procesos/bajas/anularError.jsp\")"}
-		};
-
-		String[][] opciones4 = {
-			{"Reenvío de Documentos"},
-			{"invocarContenido(\"procesos/emergencia/reenvio.jsp\")"}
-		};
-
-		menuProcesos.put("Lotes",opciones1);
-		menuProcesos.put("Resumen",opciones2);
-		menuProcesos.put("Bajas",opciones3);
-		menuProcesos.put("Emergencia",opciones4);
-		return menuProcesos;
 	}
 
-	private MenuBean generarMenuMonitoreo(){
-
-		//Menu de procesos
-		MenuBean menuMonitoreo = new MenuBean("Monitoreo");
-		String[][] opciones = {
-			{"Monitoreo de documentos"},
-			{"invocarContenido(\"monitoreo/monitoreo/monitoreo.jsp\")"}
-		};
-		menuMonitoreo.put("Visualizar",opciones);
-
-		return menuMonitoreo;
-	}
-	
-	private MenuBean generarMenuReportes(){
-
-		//Menu de procesos
-		MenuBean menuReportes = new MenuBean("Reportes");
-		String[][] opciones = {
-			{"Resumen de Ventas"},
-			{"invocarContenido(\"resumen/ventas/resumenVentas.jsp\")"}
-		};
-		menuReportes.put("Ventas",opciones);
-
-		return menuReportes;
-	}
-
-	private MenuBean generarMenuUsuarios(){
-		//Menu de procesos
-		MenuBean menuUsuarios = new MenuBean("Usuario");
-		
-		String[][] opciones1 = {
-			{"Crear Usuario"
-			,"Modificar Usuario"
-			,"Eliminar Usuario"},
-			
-			{"invocarContenido(\"usuarios/gestion/crearUsuario.jsp\")",
-			"invocarContenido(\"usuarios/gestion/modificarUsuario.jsp\")",
-			"invocarContenido(\"usuarios/gestion/eliminarUsuario.jsp\")"}
-		};
-		String[][] opciones2 = {
-			{"Configuración de Sistema"
-			,"Datos de la Empresa"},
-			
-			{"invocarContenido(\"usuarios/config/configSistema.jsp\")",
-			"invocarContenido(\"usuarios/config/configEmpresa.jsp\")"}
-		};
-		String[][] opciones3 = {
-			{"Perfil","Salir"},
-			{"invocarContenido(\"usuarios/gestion/modificarUsuario.jsp\")","loggout()"}
-		};
-
-
-		menuUsuarios.put("Gestión de Usuarios",opciones1);
-		menuUsuarios.put("Configuraciones",opciones2);
-		menuUsuarios.put("",opciones3);
-
-		return menuUsuarios;
-	}
 }
+	

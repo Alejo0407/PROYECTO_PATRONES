@@ -1,35 +1,11 @@
-/*Función del loggin*/
-$( document ).ready(function() {
+/*EVENT THAT HANDLES SESSION*/
 
-    $('#logginPanel-logginForm').on('submit', function(e) { 
-        e.preventDefault();
-
-        var formData = {
-			user:$('input[name=username]').val(),
-			pass:$('input[name=password]').val()
-		};
-		$('body').append('<div id="bloqueo"><div id="loader"></div></div>');
-
-    	$.post("IndexController", formData,function(response) {
-			
-		})
-		.done(function(response){
-			$('#bloqueo').remove();
-			if(response.error){
-				alert(response['error']);
-			}
-			else{
-				$('body').append(response);
-				$('#logginPanel').hide();	
-			}
-		})
-		.fail(() => {$('#bloqueo').remove();alert('hubo un error en la llamada');});
-    });
+$( document ).ready(function() {	
+	var data = {
+		action : 'load'
+	};
+	$.post('IndexController', data ,function(response){
+	})
+	.done((response) =>  $('body').append(response))
+	.fail(() => alert('Hubo un error en el servidor'));	
 });
-
-function loggout(){
-	//Aqui falta una llamada para matar la session
-	$('#navPanel').remove();
-	$('#menuPanel').remove();
-	$('#logginPanel').show();
-}

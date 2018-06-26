@@ -104,9 +104,13 @@ public class Programa {
 		else 
 			throw new IllegalArgumentException("EL USUARIO A ELIMINAR NO PUEDE SER DE CLASE ADMINISTRADOR");		
 	}
-	public List<UsuarioBean> listarUsuarios() throws SQLException{
+	public List<UsuarioBean> listUsuarios() throws SQLException{
 		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
 		return dao.listUsuarios();
+	}
+	public UsuarioBean getUsuario(String id) throws SQLException{
+		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
+		return dao.getUsuario(id);
 	}
 	public void updateUsuario(UsuarioBean usuario) throws SQLException {
 		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
@@ -285,10 +289,6 @@ public class Programa {
 	public List<DocumentoBean> listFacturas(Date fecha) throws SQLException{
 		DocumentoDao dao = new DocumentoDaoImpl(this.getFe());
 		return dao.listDocumentos(new java.sql.Date(fecha.getTime()), TipoDocumento.TIPO_FACTURA);
-	}
-	public List<UsuarioBean> listUsuarios() throws SQLException{
-		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
-		return dao.listUsuarios();
 	}
 
 	public void closeResources() {
