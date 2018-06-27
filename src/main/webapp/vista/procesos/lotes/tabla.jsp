@@ -3,7 +3,7 @@
 
 <%
 	Boolean descarga = (Boolean) request.getAttribute("descarga");
-	TablaProcesosBean tabla = (TablaProcesosBean) session.getAttribute("rGenerador");
+	TablaProcesosBean tabla = (TablaProcesosBean) session.getAttribute("prGenerador");
 	
 	if(tabla.getTransacciones().isEmpty()){
 		%>

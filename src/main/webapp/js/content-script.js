@@ -16,10 +16,12 @@ function invocarContenido(ruta){
 	
 	console.log(ruta);
 	var formData = {
-			vista : ruta
+			vista : ruta,
+			action : simpleLoad
 	}
+
+	$('#contenido-principal').empty();
 	$('body').append('<div id="bloqueo"><div id="loader"></div></div>');
-	
 	$.post("DispatcherController",formData,function(response){
 	})
 	.done( (response) => {
@@ -29,7 +31,33 @@ function invocarContenido(ruta){
 			location.reload();
 		}
 		else{
-			$('#contenido-principal').empty();
+			$('#contenido-principal').append(response);
+		}
+	})
+	.fail( () => {
+		alert('Hubo un error en la llamada al Servidor');
+		$('#bloqueo').remove();
+	});
+}
+
+function invocarContenidoPreCargado(ruta,funcion){
+	console.log(ruta);
+	var formData = {
+			vista : ruta,
+			action : funcion
+	}
+
+	$('#contenido-principal').empty();
+	$('body').append('<div id="bloqueo"><div id="loader"></div></div>');
+	$.post("DispatcherController",formData,function(response){
+	})
+	.done( (response) => {
+		$('#bloqueo').remove();
+		if(response.error){
+			alert('Sesión terminada');
+			location.reload();
+		}
+		else{
 			$('#contenido-principal').append(response);
 		}
 	})

@@ -400,7 +400,7 @@ public class DocumentoDaoImpl implements DocumentoDao {
 	}
 	
 	@Override
-	public int updateDocumento(int idResumen, String transaccion) 
+	public int updateDocumento(Integer idResumen, String transaccion) 
 			throws SQLException {
 		
 		try(PreparedStatement pst = conexion.prepareStatement(
@@ -408,7 +408,10 @@ public class DocumentoDaoImpl implements DocumentoDao {
 				"SET resumen_id = ? "+
 				"WHERE transaccion = ? ")){
 			
-			
+			if(idResumen == null)
+				pst.setNull(1, Types.INTEGER);
+			else
+				pst.setInt(1, idResumen);
 			pst.setInt(1, idResumen);
 			pst.setString(2, transaccion);			
 			return pst.executeUpdate();

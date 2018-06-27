@@ -27,7 +27,7 @@ public abstract class Mensajero {
 	private byte[] respuesta;
 	private String nombreRespuesta;
 	private String mimeRespuesta;
-	private int estado;
+	private Integer estado;
 	
 	//PARA LOS RESUMENES
 	private String ticket;
@@ -94,7 +94,7 @@ public abstract class Mensajero {
 		return estado;
 	}
 
-	public void setEstado(int estado) {
+	public void setEstado(Integer estado) {
 		this.estado = estado;
 	}
 

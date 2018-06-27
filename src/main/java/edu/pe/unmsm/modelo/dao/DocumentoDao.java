@@ -33,8 +33,9 @@ public interface DocumentoDao {
 	int updateDocumento(String serieElectronica, int numeroElectronico, int homologado, String transaccion)
 			throws SQLException;
 
-	int updateDocumento(int idResumen, String transaccion) throws SQLException;
 
 	int anular(String transaccion) throws SQLException;
+
+	int updateDocumento(Integer idResumen, String transaccion) throws SQLException;
 
 }

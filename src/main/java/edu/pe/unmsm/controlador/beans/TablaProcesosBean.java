@@ -14,6 +14,7 @@ public class TablaProcesosBean implements Serializable{
 	private String[] headers;
 	private List<String> transacciones;
 	private Map<String,String[]> content;
+	
 	public String[] getHeaders() {
 		return headers;
 	}

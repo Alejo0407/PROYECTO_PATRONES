@@ -24,6 +24,7 @@ import edu.pe.unmsm.modelo.dao.DocumentoDao;
 import edu.pe.unmsm.modelo.dao.DocumentoDaoImpl;
 import edu.pe.unmsm.modelo.dao.EmpresaDao;
 import edu.pe.unmsm.modelo.dao.EmpresaDaoImpl;
+import edu.pe.unmsm.modelo.dao.ResumenDao;
 import edu.pe.unmsm.modelo.dao.ResumenDaoImpl;
 import edu.pe.unmsm.modelo.dao.SistemaDao;
 import edu.pe.unmsm.modelo.dao.SistemaDaoImpl;
@@ -162,6 +163,11 @@ public class Programa {
 		URLDao dao = new URLDaoImpl(this.getFe());
 		return dao.listUrl();
 	}
+	public SistemaBean getSistema() throws SQLException{
+		SistemaDao dao = new SistemaDaoImpl(this.getFe());
+		Programa.sistema = dao.getSistema();
+		return sistema;
+	}
 	
 	//MIGRACIONES
 	public synchronized List<DocumentoBean> migrarFacturas(Date fecha, boolean corregido) throws SQLException{
@@ -290,7 +296,17 @@ public class Programa {
 		DocumentoDao dao = new DocumentoDaoImpl(this.getFe());
 		return dao.listDocumentos(new java.sql.Date(fecha.getTime()), TipoDocumento.TIPO_FACTURA);
 	}
-
+	public List<ResumenBean> listResumenes(Date fecha, boolean isReferencia) throws SQLException{
+		ResumenDao dao = new ResumenDaoImpl(this.getFe());
+		return dao.listResumenes(new java.sql.Date(fecha.getTime()), isReferencia);
+	}
+	
+	//PARA LOS ESTADOS
+	public ResumenBean getStatus(String ticket) {
+		return null;
+	}
+	
+	
 	public void closeResources() {
 		try {
 			Logger.getGlobal().log(Level.INFO, "INTENTANDO CERRAR CONEXIONES A BD");

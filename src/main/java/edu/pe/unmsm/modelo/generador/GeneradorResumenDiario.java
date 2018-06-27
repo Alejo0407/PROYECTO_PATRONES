@@ -69,6 +69,9 @@ public class GeneradorResumenDiario implements GeneradorResumenes {
 				.filter(p -> p.getResumenId() == null && p.getHomologado() == 1)
 				.collect(Collectors.toList());
 		
+		if(documentos.size() == 0)
+			return null;
+		
 		EmpresaBean empresa = empresaDao.getEmpresa();
 		if(empresa.isNull())
 			throw new NullPointerException("Los datos de la empresa están vacíos");

@@ -61,7 +61,7 @@ public class MonitorServlet extends HttpServlet{
 		}
 		catch(Exception e) {
 			try(PrintWriter out = response.getWriter()){
-				response.setContentType("application/jason");
+				response.setContentType("application/json");
 				out.write("{\"error\":\""+e.getMessage()+"\"}");
 				e.printStackTrace();
 			}

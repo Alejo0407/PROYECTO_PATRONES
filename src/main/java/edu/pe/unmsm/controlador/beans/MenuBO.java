@@ -42,6 +42,7 @@ public class MenuBO implements Serializable {
 		};
 		menuProcesos.put("Lotes",opciones1);
 		
+		/*
 		String[][] opciones2 = {
 			{"Resumen Diario"
 			,"Estado de Resumen Diario"
@@ -51,9 +52,15 @@ public class MenuBO implements Serializable {
 			"invocarContenido(\"procesos/resumen/estadoResumenDiario.jsp\")",
 			"invocarContenido(\"procesos/resumen/estadoResumenBajas.jsp\")"}
 		};
+		*/
+		String[][] opciones2 = {
+				{"Resumen Diario"},
+				{"invocarContenido(\"procesos/resumen/resumenDiario.jsp\")"}
+			};
 		menuProcesos.put("Resumen",opciones2);
 		
 		if(this.tipoUsuario == 1) {
+			/*
 			String[][] opciones3 = {
 					{"Anular Documento",
 					"Anular Documento (Error del sistema)"},
@@ -68,6 +75,14 @@ public class MenuBO implements Serializable {
 				{"invocarContenido(\"procesos/emergencia/reenvio.jsp\")"}
 			};
 			menuProcesos.put("Emergencia",opciones4);
+			*/
+			String[][] opciones3 = {
+					{"Anular Documento"},
+
+					{"invocarContenido(\"procesos/bajas/anular.jsp\")"}
+			};
+			menuProcesos.put("Bajas",opciones3);
+			
 		}
 		
 		return menuProcesos;
@@ -109,15 +124,15 @@ public class MenuBO implements Serializable {
 					,"Eliminar Usuario"},
 					
 					{"invocarContenido(\"usuarios/gestion/crearUsuario.jsp\")",
-					"invocarContenido(\"usuarios/gestion/modificarUsuario.jsp\")",
-					"invocarContenido(\"usuarios/gestion/eliminarUsuario.jsp\")"}
+					"invocarContenidoPreCargado(\"usuarios/gestion/gestionarUsuario.jsp\",\"getUsuarios\")",
+					"invocarContenidoPreCargado(\"usuarios/gestion/gestionarUsuario.jsp\",\"getUsuarios\")"}
 				};
 				String[][] opciones2 = {
 					{"Configuración de Sistema"
 					,"Datos de la Empresa"},
 					
-					{"invocarContenido(\"usuarios/config/configSistema.jsp\")",
-					"invocarContenido(\"usuarios/config/configEmpresa.jsp\")"}
+					{"invocarContenidoPreCargado(\"usuarios/config/configSistema.jsp\",\"getSistema\")",
+					"invocarContenidoPreCargado(\"usuarios/config/configEmpresa.jsp\",\"getEmpresa\")"}
 				};
 				
 				menuUsuarios.put("Gestión de Usuarios",opciones1);
