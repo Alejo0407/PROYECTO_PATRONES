@@ -38,4 +38,6 @@ public interface DocumentoDao {
 
 	int updateDocumento(Integer idResumen, String transaccion) throws SQLException;
 
+	DocumentoBean getDocumento(String transaccion) throws SQLException;
+
 }

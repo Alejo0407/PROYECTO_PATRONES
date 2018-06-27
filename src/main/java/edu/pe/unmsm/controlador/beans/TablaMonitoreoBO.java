@@ -54,6 +54,9 @@ public class TablaMonitoreoBO {
 		List<String[]> datos = docs.stream()
 				.map(p -> this.getAsArray(p))
 				.collect(Collectors.toList());
+		List<String> transacciones = docs.stream()
+				.map(p -> p.getTransaccion())
+				.collect(Collectors.toList());
 		
 		if(docs.isEmpty())
 			datos = Arrays.asList();
@@ -61,6 +64,7 @@ public class TablaMonitoreoBO {
 		this.tabla = new TablaMonitoreoBean();
 		tabla.setCabeceras(s);
 		tabla.setDatos(datos);
+		tabla.setTransacciones(transacciones);
 	}
 	
 	private String[] getAsArray(DocumentoBean d) {

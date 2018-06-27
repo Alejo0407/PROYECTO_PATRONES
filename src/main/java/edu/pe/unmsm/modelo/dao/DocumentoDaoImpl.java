@@ -487,5 +487,61 @@ public class DocumentoDaoImpl implements DocumentoDao {
 	public DocumentoBean instanceDocumento() {
 		return new DocumentoBean();
 	}
+	@Override
+	public DocumentoBean getDocumento(String transaccion) throws SQLException {
+		// TODO Auto-generated method stub
+		try(PreparedStatement pst = conexion.prepareStatement(
+				"SELECT * FROM fe.cabdocumentos WHERE transaccion = ? ",
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_READ_ONLY);
+			){
+			pst.setString(1, transaccion);
+			try(ResultSet rs = pst.executeQuery()){
+				if(rs.next()) {
+					DocumentoBean documento = new DocumentoBean();
+					documento.setTransaccion(rs.getString("transaccion"));
+					documento.setPeriodo(rs.getString("periodo"));
+					documento.setTipo(rs.getInt("tipodocumento"));
+					documento.setSerieOriginal(rs.getString("serie"));
+					documento.setNumeroOriginal(rs.getInt("numero"));
+					documento.setFechaEmision(rs.getDate("fechaemision"));
+					documento.setFechaVencimiento(rs.getDate("fechavencimiento"));
+					documento.setTipoCliente(rs.getString("tipocliente"));
+					documento.setNumeroCliente(rs.getString("numcliente"));
+					documento.setNombreCliente(rs.getString("nomcliente"));
+					documento.setDireccion(rs.getString("direccion"));
+					documento.setDepartamento(rs.getString("departamento"));
+					documento.setProvincia(rs.getString("provincia"));
+					documento.setDistrito(rs.getString("distrito"));
+					documento.setEmail(rs.getString("email"));
+					documento.setValorVentaAfecta(rs.getDouble("valventaafe"));
+					documento.setValorVentaInafecta(rs.getDouble("valventaina"));
+					documento.setValorVentaExonerada(rs.getDouble("valventaexo"));
+					documento.setIsc(rs.getDouble("isc"));
+					documento.setCodigoIsc(rs.getString("codisc"));
+					documento.setIgv(rs.getDouble("igv"));
+					documento.setCodigoIgv(rs.getString("codigv"));
+					documento.setOtrosTributos(rs.getDouble("otros"));
+					documento.setTotal(rs.getDouble("totaldoc"));
+					documento.setSerieElectronica(rs.getString("serieelec"));
+					documento.setNumeroElectronico(rs.getInt("numeroelec"));
+					documento.setHomologado(rs.getInt("homologado"));
+					documento.setFechaHomologado(rs.getDate("fechomologado"));
+					documento.setArchivo(rs.getBlob("archivo"));
+					documento.setNombreArchivo(rs.getString("nom_archivo"));
+					documento.setMensajeSunat(rs.getString("mensaje_homologado"));
+					documento.setRespuestaSunat(rs.getBlob("archivo_homologado"));
+					documento.setNombreRespuestaSunat(rs.getString("nom_archivo_homologado"));
+					documento.setAnulado(rs.getBoolean("anulado"));
+					documento.setResumenId(rs.getString("resumen_id") == null? null : rs.getInt("resumen_id"));
+					
+					return documento;
+				}
+				else
+					return null;
+			}
+			
+		}
+	}
 	
 }

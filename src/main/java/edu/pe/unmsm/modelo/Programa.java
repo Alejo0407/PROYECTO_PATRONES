@@ -313,7 +313,10 @@ public class Programa {
 		ResumenDao dao = new ResumenDaoImpl(this.getFe());
 		return dao.listResumenes(new java.sql.Date(fecha.getTime()), isReferencia);
 	}
-	
+	public DocumentoBean getDocumento(String transaccion) throws SQLException{
+		DocumentoDao dao = new DocumentoDaoImpl(this.getFe());
+		return dao.getDocumento(transaccion);
+	}
 	//PARA LOS ESTADOS
 	public ResumenBean getStatus(String ticket) {
 		return null;

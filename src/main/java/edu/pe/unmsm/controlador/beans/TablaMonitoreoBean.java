@@ -12,7 +12,7 @@ public class TablaMonitoreoBean implements Serializable{
 	
 	private List<String> cabeceras;
 	private List<String[]> datos;
-	
+	private List<String> transacciones;
 	
 	public List<String> getCabeceras() {
 		return cabeceras;
@@ -25,6 +25,12 @@ public class TablaMonitoreoBean implements Serializable{
 	}
 	public void setDatos(List<String[]> datos) {
 		this.datos = datos;
+	}
+	public List<String> getTransacciones() {
+		return transacciones;
+	}
+	public void setTransacciones(List<String> transacciones) {
+		this.transacciones = transacciones;
 	}
 	
 	
