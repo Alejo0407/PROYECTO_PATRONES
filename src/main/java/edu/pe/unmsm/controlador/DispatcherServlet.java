@@ -42,6 +42,9 @@ public class DispatcherServlet extends HttpServlet {
 			case "getEmpresa":
 				getEmpresa(request,response);
 				break;
+			case "getUsuarios":
+				getUsuarios(request,response);
+				break;
 			}
 		}
 		else {
@@ -53,6 +56,21 @@ public class DispatcherServlet extends HttpServlet {
 		
 	}
 	
+	private void getUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		try {
+			Programa p = new Programa();
+			request.setAttribute("usuarios", p.listUsuarios());
+			simpleLoad(request,response);
+		}catch(Exception e) {
+			try(PrintWriter out = response.getWriter()){
+				response.setContentType("application/json");
+				out.write("{\"error\":\""+e.getMessage()+"\"}");
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private void simpleLoad(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//REALIZAR EL DISPATCH
@@ -83,7 +101,7 @@ public class DispatcherServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			Programa p = new Programa();
-			request.setAttribute("sistema", p.getDatosEmpresa());
+			request.setAttribute("empresa", p.getDatosEmpresa());
 			
 			simpleLoad(request,response);
 		}catch(Exception e) {

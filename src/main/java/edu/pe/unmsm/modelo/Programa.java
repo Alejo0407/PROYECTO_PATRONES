@@ -3,6 +3,7 @@ package edu.pe.unmsm.modelo;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -92,6 +93,7 @@ public class Programa {
 	}
 	public synchronized void addUsuario(UsuarioBean usuario) throws SQLException {
 		UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
+		usuario.setPass(Base64.getEncoder().encodeToString(usuario.getPass().getBytes()));
 		dao.addUsuario(usuario);
 		Logger.getGlobal().log(Level.INFO, "USUARIO "+ usuario.getId() + " REGISTRADO");
 	}
@@ -101,6 +103,17 @@ public class Programa {
 			UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
 			dao.deleteUsuario(usuario.getId());
 			Logger.getGlobal().log(Level.INFO, "USUARIO "+ usuario.getId() + " ELIMINADO");
+		}
+		else 
+			throw new IllegalArgumentException("EL USUARIO A ELIMINAR NO PUEDE SER DE CLASE ADMINISTRADOR");		
+	}
+	
+	public synchronized void deleteUsuario(String usuario, int rango) throws SQLException {
+		
+		if(rango != 1) {
+			UsuarioDao dao = new UsuarioDaoImpl(this.getFe());
+			dao.deleteUsuario(usuario);
+			Logger.getGlobal().log(Level.INFO, "USUARIO "+ usuario + " ELIMINADO");
 		}
 		else 
 			throw new IllegalArgumentException("EL USUARIO A ELIMINAR NO PUEDE SER DE CLASE ADMINISTRADOR");		
@@ -335,4 +348,5 @@ public class Programa {
 	public void setFe(Connection fe) {
 		this.fe = fe;
 	}
+	
 }

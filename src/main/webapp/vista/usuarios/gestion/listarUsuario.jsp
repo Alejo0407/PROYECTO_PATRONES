@@ -1,48 +1,40 @@
 <%@ page language='java' contentType='text/html; charset=UTF-8'
 pageEncoding='UTF-8'%>
+<%@ page import = "java.util.List" %>
+<%@ page import = "edu.pe.unmsm.modelo.dao.beans.UsuarioBean" %>
+
+<%
+	List<UsuarioBean> usuarios = (List<UsuarioBean>)request.getAttribute("usuarios");
+%>
 
 <div class="row">
     <table class="table m-2">
         <thead class="thead-dark">
+        <tr>
             <th scope="col">ID</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
             <th scope="col" class="text-center">Opciones</th>
+        </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Diego</td>
-                <td>Pastor</td>
+        <%for(UsuarioBean usuario : usuarios) {
+        %>
+       		<tr>
+                <th scope="row"><%= usuario.getId() %></th>
+                <td><%=usuario.getNombres() %></td>
+                <td><%=usuario.getApellidos() %></td>
                 <td class="text-center">
                     <div>
-                        <button type="button" class="btn btn-info">Editar</button>
-                        <button type="button" class="btn btn-danger">Borrar</button>
+                        <button type="button" class="btn btn-info" 
+                        	onclick = 'usEditar("<%=usuario.getId()%>")'>Editar</button>
+                        <button type="button" class="btn btn-danger" 
+                        	onclick = 'usBorrar("<%=usuario.getId()%>")'>Borrar</button>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>Diego</td>
-                <td>Pastor</td>
-                <td class="text-center">
-                    <div>
-                        <button type="button" class="btn btn-info">Editar</button>
-                        <button type="button" class="btn btn-danger">Borrar</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>Diego</td>
-                <td>Pastor</td>
-                <td class="text-center">
-                    <div>
-                        <button type="button" class="btn btn-info">Editar</button>
-                        <button type="button" class="btn btn-danger">Borrar</button>
-                    </div>
-                </td>
-            </tr>
+		<%} 
+		%>
         </tbody>
     </table>
 </div>

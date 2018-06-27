@@ -117,7 +117,7 @@ public class IndexServlet extends HttpServlet{
 	private boolean validateLoggin(HttpServletRequest request, 
 			HttpServletResponse response) throws SQLException, NamingException, UnsupportedEncodingException {
 		
-		if(request.getSession().getAttribute("usr") == null) {
+		//if(request.getSession().getAttribute("usr") == null) {
 			//LOGGIN
 			String user = (String)request.getParameter("username");
 			String pass = (String)request.getParameter("password");
@@ -136,14 +136,15 @@ public class IndexServlet extends HttpServlet{
 				if(usr == null)
 					return false;
 				else {
+					
 					String decoded = new String(Base64.getDecoder().decode(this.usr.getPass()),"UTF-8");
 					boolean b = (pass.equals(decoded));
 					if(b) request.getSession().setAttribute("usr", this.usr);
 					return b;
 				}
 			}
-		}
-		return false;
+		//}
+		//return false;
 		
 	}
 

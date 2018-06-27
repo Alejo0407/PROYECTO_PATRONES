@@ -124,8 +124,8 @@ public class MenuBO implements Serializable {
 					,"Eliminar Usuario"},
 					
 					{"invocarContenido(\"usuarios/gestion/crearUsuario.jsp\")",
-					"invocarContenidoPreCargado(\"usuarios/gestion/gestionarUsuario.jsp\",\"getUsuarios\")",
-					"invocarContenidoPreCargado(\"usuarios/gestion/gestionarUsuario.jsp\",\"getUsuarios\")"}
+					"invocarContenidoPreCargado(\"usuarios/gestion/listarUsuario.jsp\",\"getUsuarios\")",
+					"invocarContenidoPreCargado(\"usuarios/gestion/listarUsuario.jsp\",\"getUsuarios\")"}
 				};
 				String[][] opciones2 = {
 					{"Configuración de Sistema"

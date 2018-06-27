@@ -3,7 +3,7 @@ pageEncoding='UTF-8'%>
 
 
 <div class="row">
-    <form action="#" class="m-5">
+    <div class="m-5">
         <div class="form-group row">
             <label for="IdUser" class="col-sm-2 col-form-label">IdUsuario</label>
             <div class="col-sm-10">
@@ -39,15 +39,15 @@ pageEncoding='UTF-8'%>
             <div class="col-sm-10">
                 <select class="form-control" name="rango" id="Rango">
                     <!--Aca poner los rangos con un for-->
-                    <option value="admin">Administrador</option>
-                    <option value="ventas">Ventas</option>
+                    <option value="1">Administrador</option>
+                    <option value="2">Ventas</option>
                 </select>
             </div>
         </div>
         <div class="form-group row">
             <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary" onclick = 'usEnviar("crearUsuario")'>Guardar</button>
             </div>
         </div>
-    </form>
+    </div>
 </div>

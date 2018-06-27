@@ -17,7 +17,7 @@ function invocarContenido(ruta){
 	console.log(ruta);
 	var formData = {
 			vista : ruta,
-			action : simpleLoad
+			action : 'simpleLoad'
 	}
 
 	$('#contenido-principal').empty();

@@ -55,24 +55,27 @@ public class UsuarioDaoImpl implements UsuarioDao{
 	public UsuarioBean getUsuario(String id) throws SQLException{
 		try(PreparedStatement pst = conexion.prepareStatement(
 				"SELECT id_usuario,pass,correo,nombres,apellido,id_rango "+ 
-				"FROM fe.usuarios ", 
+				"FROM fe.usuarios WHERE id_usuario = ? ", 
 				ResultSet.TYPE_SCROLL_SENSITIVE,
 				ResultSet.CONCUR_READ_ONLY);
-			ResultSet rs = pst.executeQuery()){
+			){
 			
-			UsuarioBean u = null;
-			
-			if(rs.next()) {
-				u = new UsuarioBean();
-				u.setId(rs.getString(1));
-				u.setPass(rs.getString(2));
-				u.setCorreo(rs.getString(3));
-				u.setNombres(rs.getString(4));
-				u.setApellidos(rs.getString(5));
-				u.setRango(rs.getInt(6));
+			pst.setString(1, id);
+			try(ResultSet rs = pst.executeQuery()){
+				UsuarioBean u = null;
+				
+				if(rs.next()) {
+					u = new UsuarioBean();
+					u.setId(rs.getString(1));
+					u.setPass(rs.getString(2));
+					u.setCorreo(rs.getString(3));
+					u.setNombres(rs.getString(4));
+					u.setApellidos(rs.getString(5));
+					u.setRango(rs.getInt(6));
+				}
+				
+				return u;
 			}
-			
-			return u;
 		}
 	}
 	
